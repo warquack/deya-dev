@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>deya.dev — Direction 05: Newspaper</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Source+Serif+4:ital,wght@0,300;0,400;1,300;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0e0d0b;
+    --paper: #131210;
+    --rule: #2a2825;
+    --rule-strong: #3a3835;
+    --mid: #5a5755;
+    --text: #9a9490;
+    --secondary: #c8c0b0;
+    --primary: #e8e0cc;
+    --white: #f4ece0;
+    --gold: #c8963c;
+    --red: #c83c3c;
+  }
+
+  html {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* TOP STRIP */
+  .top-strip {
+    border-bottom: 1px solid var(--rule);
+    padding: 6px 32px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--mid);
+  }
+  .top-strip-center { color: var(--gold); }
+
+  /* MASTHEAD */
+  .masthead {
+    padding: 32px;
+    text-align: center;
+    border-bottom: 1px solid var(--rule-strong);
+  }
+  .masthead-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--mid); margin-bottom: 12px;
+    display: flex; align-items: center; justify-content: center; gap: 16px;
+  }
+  .masthead-eyebrow::before, .masthead-eyebrow::after {
+    content: ''; display: block; flex: 1; max-width: 120px;
+    height: 1px; background: var(--rule-strong);
+  }
+  .masthead-name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(56px, 9vw, 120px);
+    font-weight: 900; line-height: 0.9;
+    letter-spacing: -0.02em; color: var(--white);
+    margin-bottom: 8px;
+  }
+  .masthead-tagline {
+    font-family: 'Source Serif 4', serif;
+    font-style: italic; font-size: 18px;
+    color: var(--text); margin-bottom: 16px;
+  }
+  .masthead-meta {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--mid);
+    display: flex; align-items: center; justify-content: center; gap: 24px;
+    border-top: 1px solid var(--rule);
+    padding-top: 12px; margin-top: 8px;
+  }
+  .masthead-meta .sep { color: var(--rule-strong); }
+  .masthead-meta .vol { color: var(--gold); }
+
+  /* NAV */
+  .section-nav {
+    border-bottom: 3px double var(--rule-strong);
+    padding: 8px 32px;
+    display: flex; align-items: center; gap: 0;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .snav-link {
+    padding: 4px 16px;
+    color: var(--mid); text-decoration: none;
+    border-right: 1px solid var(--rule);
+    transition: color 0.15s;
+  }
+  .snav-link:first-child { padding-left: 0; }
+  .snav-link:hover { color: var(--primary); }
+  .snav-right { margin-left: auto; color: var(--gold); }
+
+  /* MAIN GRID */
+  .front-page {
+    padding: 32px;
+    display: grid;
+    grid-template-columns: 1fr 2px 2fr 2px 1fr;
+    gap: 0;
+    column-gap: 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .rule-v { background: var(--rule); }
+
+  /* COLUMN */
+  .col { padding: 0 24px; }
+  .col:first-child { padding-left: 0; }
+  .col:last-child { padding-right: 0; }
+
+  .col-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--mid); padding-bottom: 8px;
+    border-bottom: 1px solid var(--rule-strong);
+    margin-bottom: 20px;
+  }
+
+  /* HEADLINE */
+  .headline {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    line-height: 1.0;
+  }
+  .headline.xl { font-size: clamp(32px, 4vw, 52px); margin-bottom: 12px; }
+  .headline.lg { font-size: 26px; margin-bottom: 10px; }
+  .headline.md { font-size: 20px; margin-bottom: 8px; }
+  .headline.sm { font-size: 16px; margin-bottom: 6px; }
+
+  .deck {
+    font-family: 'Source Serif 4', serif;
+    font-style: italic; font-size: 14px; color: var(--text);
+    margin-bottom: 12px; line-height: 1.5;
+  }
+  .byline {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--mid); margin-bottom: 12px;
+  }
+  .body-text { font-size: 14px; color: var(--text); line-height: 1.7; }
+  .body-text p { margin-bottom: 10px; }
+  .rule-h { border: none; border-top: 1px solid var(--rule); margin: 16px 0; }
+  .rule-h.strong { border-color: var(--rule-strong); }
+
+  /* SECONDARY STORIES */
+  .secondary-story { padding-bottom: 16px; margin-bottom: 16px; border-bottom: 1px solid var(--rule); }
+  .secondary-story:last-child { border-bottom: none; }
+
+  /* SIGNAL BOX */
+  .signal-box {
+    border: 1px solid var(--rule-strong);
+    padding: 16px; margin-top: 16px;
+    background: rgba(200, 150, 60, 0.04);
+  }
+  .signal-box-header {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 12px;
+    padding-bottom: 8px; border-bottom: 1px solid var(--rule);
+  }
+  .signal-entry { margin-bottom: 10px; }
+  .signal-entry-name { font-size: 12px; font-weight: 700; color: var(--secondary); margin-bottom: 2px; }
+  .signal-entry-desc { font-size: 11px; color: var(--mid); line-height: 1.4; }
+
+  /* BOTTOM STRIP */
+  .bottom-strip {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    border-top: 3px double var(--rule-strong);
+    border-bottom: 1px solid var(--rule);
+  }
+  .bs-cell {
+    padding: 24px 32px;
+    border-right: 1px solid var(--rule);
+  }
+  .bs-cell:last-child { border-right: none; }
+  .bs-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--mid); margin-bottom: 12px;
+    padding-bottom: 8px; border-bottom: 1px solid var(--rule);
+  }
+  .bs-title { font-family: 'Playfair Display', serif; font-size: 16px; color: var(--secondary); margin-bottom: 6px; line-height: 1.2; }
+  .bs-excerpt { font-size: 12px; color: var(--mid); line-height: 1.5; }
+
+  /* NEWSLETTER */
+  .newsletter-n {
+    padding: 32px;
+    border-bottom: 1px solid var(--rule);
+    display: grid; grid-template-columns: 1fr 1px 1fr; gap: 0;
+  }
+  .nl-left-n { padding-right: 32px; }
+  .nl-right-n { padding-left: 32px; }
+  .nl-divider { background: var(--rule); }
+  .nl-title-n {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700; font-style: italic;
+    font-size: 36px; line-height: 1.0;
+    letter-spacing: -0.02em; color: var(--white);
+    margin-bottom: 8px;
+  }
+  .nl-sub-n { font-size: 13px; color: var(--text); line-height: 1.6; }
+  .nl-form-n { display: flex; flex-direction: column; gap: 10px; justify-content: center; height: 100%; }
+  .nl-input-n {
+    padding: 10px 14px;
+    background: transparent; border: 1px solid var(--rule-strong);
+    color: var(--primary); font-family: 'Source Serif 4', serif; font-size: 14px;
+    outline: none; transition: border-color 0.2s;
+  }
+  .nl-input-n:focus { border-color: var(--gold); }
+  .nl-input-n::placeholder { color: var(--mid); font-style: italic; }
+  .nl-btn-n {
+    padding: 10px 24px;
+    background: var(--gold); color: var(--bg);
+    border: none; cursor: pointer;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+    transition: opacity 0.15s;
+  }
+  .nl-btn-n:hover { opacity: 0.85; }
+
+  /* FOOTER */
+  footer {
+    padding: 20px 32px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-top: 3px double var(--rule-strong);
+  }
+  .footer-logo-n {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; font-weight: 900; color: var(--secondary);
+    letter-spacing: -0.02em;
+  }
+  .footer-logo-n span { color: var(--gold); }
+  .footer-copy {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; color: var(--mid); letter-spacing: 0.06em;
+  }
+
+  .mockup-label {
+    position: fixed; bottom: 20px; right: 20px; z-index: 999;
+    background: var(--gold); color: var(--bg);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 8px 14px;
+  }
+</style>
+</head>
+<body>
+
+<div class="mockup-label">Direction 05 — Newspaper</div>
+
+<div class="top-strip">
+  <span>Program Manager · CDAO · GenAI.mil</span>
+  <span class="top-strip-center">★ Making AI real where it actually matters ★</span>
+  <span>Vol. I, No. 1 · March 2026</span>
+</div>
+
+<header class="masthead">
+  <div class="masthead-eyebrow">AI at the speed of government</div>
+  <div class="masthead-name">deya.dev</div>
+  <div class="masthead-tagline">Inside perspectives on deploying AI where the mission is real</div>
+  <div class="masthead-meta">
+    <span class="vol">CDAO</span>
+    <span class="sep">·</span>
+    <span>GenAI.mil</span>
+    <span class="sep">·</span>
+    <span>Est. 2026</span>
+    <span class="sep">·</span>
+    <span>Published irregularly, when it matters</span>
+  </div>
+</header>
+
+<nav class="section-nav">
+  <a href="#" class="snav-link">Writing</a>
+  <a href="#" class="snav-link">Signal Stack</a>
+  <a href="#" class="snav-link">Prompts</a>
+  <a href="#" class="snav-link">Tools</a>
+  <span class="snav-right">→ Subscribe to The Brief</span>
+</nav>
+
+<main class="front-page">
+  <!-- LEFT COLUMN -->
+  <div class="col">
+    <div class="col-label">The Brief</div>
+    <div class="secondary-story">
+      <h3 class="headline sm">Building an AI briefing system without social media</h3>
+      <div class="deck">How to stay current on AI when doom-scrolling isn't an option</div>
+      <div class="byline">By Deya Banisakher · Feb 2026</div>
+      <div class="body-text">
+        <p>Off social media and trying to keep up with AI developments? Here's the exact system I built...</p>
+      </div>
+    </div>
+    <div class="rule-h strong"></div>
+    <div class="signal-box">
+      <div class="signal-box-header">Signal Stack — Top Sources</div>
+      <div class="signal-entry">
+        <div class="signal-entry-name">Latent Space</div>
+        <div class="signal-entry-desc">Deep on capabilities & deployment. Builder/PM lens.</div>
+      </div>
+      <div class="signal-entry">
+        <div class="signal-entry-name">Import AI</div>
+        <div class="signal-entry-desc">Jack Clark. Weekly. Capabilities + policy.</div>
+      </div>
+      <div class="signal-entry">
+        <div class="signal-entry-name">Simon Willison</div>
+        <div class="signal-entry-desc">Tests everything. No hype. Just findings.</div>
+      </div>
+      <div class="signal-entry">
+        <div class="signal-entry-name">Stratechery</div>
+        <div class="signal-entry-desc">Why vendors make moves.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rule-v"></div>
+
+  <!-- CENTER COLUMN -->
+  <div class="col">
+    <div class="col-label">Feature</div>
+    <h1 class="headline xl">What the latest model releases actually mean for government deployment</h1>
+    <div class="deck">Everyone covered what dropped. Nobody covered what it means when your users operate in classified environments — and can't just paste data into a commercial tool.</div>
+    <div class="byline">By Deya Banisakher, Program Manager · CDAO · March 15, 2026</div>
+    <div class="rule-h"></div>
+    <div class="body-text">
+      <p>The past month has seen three major foundation model releases. The benchmark scores are impressive. The GitHub repos are crowded. The Twitter threads are insufferable. And none of it answers the question my users are actually asking: <em>can we use this?</em></p>
+      <p>At GenAI.mil, that question has a very specific shape. It involves FedRAMP authorization windows, data residency requirements, STIG compliance checklists, and the fundamental tension between "this model is capable" and "this model is approved."</p>
+      <p>Let me break down what actually changed, and what it means for enterprise government deployment specifically...</p>
+    </div>
+    <div class="rule-h strong" style="margin-top:24px"></div>
+    <div class="secondary-story" style="margin-top:16px">
+      <h3 class="headline md">Vendor AI demos never show you this</h3>
+      <div class="deck">Four questions that separate real capability from slide-ware</div>
+      <div class="byline">By Deya Banisakher · Feb 2026 · 10 min read</div>
+    </div>
+  </div>
+
+  <div class="rule-v"></div>
+
+  <!-- RIGHT COLUMN -->
+  <div class="col">
+    <div class="col-label">Analysis</div>
+    <div class="secondary-story">
+      <h3 class="headline md">Reasoning models in government: what actually changes</h3>
+      <div class="deck">The benchmark numbers are impressive. The deployment constraints are the real story.</div>
+      <div class="byline">Feb 2026 · 7 min read</div>
+    </div>
+    <div class="rule-h"></div>
+    <div class="secondary-story">
+      <h3 class="headline sm">The FedRAMP AI authorization backlog is getting worse</h3>
+      <div class="body-text"><p>What the pace of commercial AI releases means for government IT procurement timelines.</p></div>
+    </div>
+    <div class="rule-h"></div>
+    <div class="secondary-story">
+      <h3 class="headline sm">Why "good enough for the demo" isn't good enough anymore</h3>
+      <div class="body-text"><p>A short essay on what it actually takes to ship AI to warfighters.</p></div>
+    </div>
+    <div class="rule-h strong"></div>
+    <div style="margin-top:16px">
+      <div class="col-label">Prompts &amp; Tools</div>
+      <div class="secondary-story">
+        <div class="signal-entry-name" style="font-size:13px; color: var(--secondary)">Prompt: Vendor Capability Assessment</div>
+        <div class="signal-entry-desc" style="margin-top:4px">Ask the vendor these five questions before any demo. Separates real deployments from vaporware.</div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<section class="bottom-strip">
+  <div class="bs-cell">
+    <div class="bs-label">Upcoming</div>
+    <div class="bs-title">AI governance frameworks for enterprise DoD deployment</div>
+    <div class="bs-excerpt">A deep-dive on CDAO's evolving policy landscape for foundation model use.</div>
+  </div>
+  <div class="bs-cell">
+    <div class="bs-label">Tools Review</div>
+    <div class="bs-title">GenAI.mil Platform — Q1 2026 Capabilities Update</div>
+    <div class="bs-excerpt">What's new, what shipped, and what's coming on the platform your people are using.</div>
+  </div>
+  <div class="bs-cell">
+    <div class="bs-label">The Doers</div>
+    <div class="bs-title">If you understand the problem, you have an obligation to act</div>
+    <div class="bs-excerpt">The philosophy behind why any of this gets written down.</div>
+  </div>
+</section>
+
+<section class="newsletter-n">
+  <div class="nl-left-n">
+    <div class="nl-title-n">The Signal,<br>Not the Noise.</div>
+    <p class="nl-sub-n">A regular dispatch on AI capabilities, enterprise deployment, and vendor reality — from inside the DoD. Written when something actually matters, not on a schedule.</p>
+  </div>
+  <div class="nl-divider"></div>
+  <div class="nl-right-n">
+    <div class="nl-form-n">
+      <input class="nl-input-n" type="email" placeholder="Your email address...">
+      <button class="nl-btn-n">Subscribe to The Brief →</button>
+      <span style="font-size:11px; color: var(--mid); font-style:italic">No spam. No algorithm. Just the things worth knowing.</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-logo-n">deya<span>.dev</span></span>
+  <span class="footer-copy">CDAO · GenAI.mil · Program Manager · Duck Ops Cleared 🦆</span>
+</footer>
+
+</body>
+</html>

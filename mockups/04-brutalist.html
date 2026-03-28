@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>deya.dev — Direction 04: Brutalist</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0c0c0c;
+    --white: #f2f0e8;
+    --yellow: #e8d44d;
+    --red: #e8453c;
+    --border: #f2f0e8;
+    --mid: #666;
+    --dim: #222;
+  }
+
+  html {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+  }
+
+  /* NAV */
+  nav {
+    border-bottom: 3px solid var(--border);
+    display: flex; align-items: stretch;
+    height: 56px;
+  }
+  .nav-logo-block {
+    border-right: 3px solid var(--border);
+    padding: 0 24px;
+    display: flex; align-items: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 16px; font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .nav-logo-block span { color: var(--yellow); }
+  .nav-links { display: flex; flex: 1; }
+  .nav-link {
+    border-right: 3px solid var(--border);
+    padding: 0 20px;
+    display: flex; align-items: center;
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--mid); text-decoration: none;
+    transition: all 0.1s;
+  }
+  .nav-link:hover { background: var(--border); color: var(--bg); }
+  .nav-right { margin-left: auto; display: flex; }
+  .nav-cta {
+    border-left: 3px solid var(--border);
+    padding: 0 24px;
+    display: flex; align-items: center;
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    background: var(--yellow); color: var(--bg);
+    text-decoration: none; transition: opacity 0.1s;
+  }
+  .nav-cta:hover { opacity: 0.85; }
+
+  /* HERO */
+  .hero {
+    border-bottom: 3px solid var(--border);
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    min-height: calc(100vh - 56px);
+  }
+  .hero-main {
+    border-right: 3px solid var(--border);
+    padding: 64px;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .hero-issue {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--mid); margin-bottom: 48px;
+    display: flex; gap: 32px;
+  }
+  .hero-h1 {
+    font-size: clamp(64px, 9vw, 128px);
+    font-weight: 700; line-height: 0.9;
+    letter-spacing: -0.04em;
+    color: var(--white);
+    margin-bottom: 0;
+  }
+  .hero-h1 .accent { color: var(--yellow); display: block; }
+  .hero-bottom {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    margin-top: 64px;
+  }
+  .hero-desc {
+    font-size: 16px; line-height: 1.6; color: var(--mid);
+    max-width: 420px;
+  }
+  .hero-desc strong { color: var(--white); }
+  .hero-btn-group { display: flex; gap: 0; flex-shrink: 0; }
+  .hero-btn {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 14px 24px;
+    border: 3px solid var(--border);
+    color: var(--white); background: transparent;
+    text-decoration: none; transition: all 0.1s;
+  }
+  .hero-btn:hover { background: var(--white); color: var(--bg); }
+  .hero-btn.filled { background: var(--yellow); color: var(--bg); border-color: var(--yellow); margin-right: -3px; }
+  .hero-btn.filled:hover { background: var(--white); border-color: var(--white); }
+
+  .hero-side {
+    display: flex; flex-direction: column;
+  }
+  .hero-side-top {
+    padding: 32px;
+    border-bottom: 3px solid var(--border);
+    flex: 1;
+    display: flex; flex-direction: column; justify-content: flex-end;
+  }
+  .latest-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--yellow); margin-bottom: 20px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .latest-label::before { content: '●'; font-size: 6px; }
+  .latest-title {
+    font-size: 22px; font-weight: 700;
+    line-height: 1.2; letter-spacing: -0.02em;
+    color: var(--white); margin-bottom: 16px;
+  }
+  .latest-excerpt { font-size: 13px; color: var(--mid); line-height: 1.6; }
+  .latest-meta {
+    margin-top: 24px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; color: var(--mid);
+    border-top: 1px solid var(--dim);
+    padding-top: 16px;
+    display: flex; justify-content: space-between;
+  }
+
+  .hero-side-numbers {
+    display: grid; grid-template-columns: 1fr 1fr;
+  }
+  .num-block {
+    padding: 24px;
+    border-top: 3px solid var(--border);
+    border-right: 3px solid var(--border);
+  }
+  .num-block:nth-child(even) { border-right: none; }
+  .num-val {
+    font-family: 'Space Mono', monospace;
+    font-size: 36px; font-weight: 700;
+    color: var(--white); line-height: 1;
+    margin-bottom: 4px;
+  }
+  .num-label { font-size: 11px; color: var(--mid); text-transform: uppercase; letter-spacing: 0.08em; }
+
+  /* CONTENT */
+  .content-row {
+    border-bottom: 3px solid var(--border);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .content-header {
+    border-bottom: 3px solid var(--border);
+    padding: 16px 32px;
+    grid-column: 1 / -1;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .content-header-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--mid);
+  }
+  .content-header-link {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--yellow); text-decoration: none;
+  }
+  .post-cell {
+    padding: 32px;
+    border-right: 3px solid var(--border);
+    cursor: pointer; transition: background 0.1s;
+  }
+  .post-cell:last-child { border-right: none; }
+  .post-cell:hover { background: var(--dim); }
+  .post-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; color: var(--mid); margin-bottom: 16px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .post-tag-b {
+    background: var(--dim); border: 1px solid #333;
+    padding: 2px 8px; font-size: 10px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--mid);
+  }
+  .post-tag-b.cap { background: rgba(232,212,77,0.1); border-color: rgba(232,212,77,0.3); color: var(--yellow); }
+  .post-title-b {
+    font-size: 18px; font-weight: 700;
+    line-height: 1.2; letter-spacing: -0.02em;
+    color: var(--white); margin-bottom: 12px;
+  }
+  .post-exc-b { font-size: 13px; color: var(--mid); line-height: 1.5; }
+
+  /* SIGNAL BAR */
+  .signal-bar {
+    border-bottom: 3px solid var(--border);
+    display: grid; grid-template-columns: 200px 1fr;
+  }
+  .signal-bar-label {
+    border-right: 3px solid var(--border);
+    padding: 32px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .signal-bar-label h2 {
+    font-size: 32px; font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--white);
+  }
+  .signal-bar-label p {
+    font-size: 12px; color: var(--mid); margin-top: 8px;
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.05em;
+  }
+  .signal-items { display: grid; grid-template-columns: repeat(4, 1fr); }
+  .signal-item-b {
+    padding: 24px;
+    border-right: 3px solid var(--border);
+    cursor: pointer; transition: background 0.1s;
+  }
+  .signal-item-b:last-child { border-right: none; }
+  .signal-item-b:hover { background: var(--dim); }
+  .si-num { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--mid); margin-bottom: 12px; }
+  .si-name { font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 8px; line-height: 1.2; }
+  .si-desc { font-size: 12px; color: var(--mid); line-height: 1.5; }
+
+  /* NEWSLETTER */
+  .newsletter-b {
+    border-bottom: 3px solid var(--border);
+    display: grid; grid-template-columns: 1fr 1fr;
+  }
+  .nl-left-b {
+    border-right: 3px solid var(--border);
+    padding: 64px;
+    background: var(--yellow);
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .nl-left-b h2 {
+    font-size: 56px; font-weight: 700;
+    letter-spacing: -0.04em; line-height: 0.9;
+    color: var(--bg); margin-bottom: 16px;
+  }
+  .nl-left-b p { font-size: 14px; color: rgba(0,0,0,0.6); line-height: 1.6; }
+  .nl-right-b {
+    padding: 64px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .nl-right-b label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--mid); margin-bottom: 12px; display: block;
+  }
+  .nl-input-b {
+    width: 100%; padding: 16px;
+    background: var(--bg); border: 3px solid var(--border);
+    color: var(--white); font-family: 'Space Grotesk', sans-serif; font-size: 15px;
+    outline: none; margin-bottom: 12px;
+    transition: border-color 0.1s;
+  }
+  .nl-input-b:focus { border-color: var(--yellow); }
+  .nl-input-b::placeholder { color: var(--mid); }
+  .nl-btn-b {
+    width: 100%; padding: 16px;
+    background: var(--white); color: var(--bg);
+    border: none; cursor: pointer;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    transition: background 0.1s;
+  }
+  .nl-btn-b:hover { background: var(--yellow); }
+
+  /* FOOTER */
+  footer {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    border-top: 3px solid var(--border);
+  }
+  .footer-cell {
+    padding: 24px 32px;
+    border-right: 3px solid var(--border);
+    display: flex; align-items: center;
+    font-family: 'Space Mono', monospace; font-size: 12px;
+  }
+  .footer-cell:last-child { border-right: none; }
+  .footer-cell.center { justify-content: center; }
+  .footer-cell.right { justify-content: flex-end; }
+  .footer-logo-b { font-weight: 700; font-size: 14px; }
+  .footer-logo-b span { color: var(--yellow); }
+
+  .mockup-label {
+    position: fixed; bottom: 20px; right: 20px; z-index: 999;
+    background: var(--yellow); color: var(--bg);
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 8px 14px;
+    border: 3px solid var(--bg);
+  }
+</style>
+</head>
+<body>
+
+<div class="mockup-label">Direction 04 — Brutalist</div>
+
+<nav>
+  <div class="nav-logo-block">deya<span>.dev</span></div>
+  <div class="nav-links">
+    <a href="#" class="nav-link">Writing</a>
+    <a href="#" class="nav-link">Signals</a>
+    <a href="#" class="nav-link">Prompts</a>
+    <a href="#" class="nav-link">Tools</a>
+  </div>
+  <div class="nav-right">
+    <a href="#" class="nav-cta">Subscribe</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-main">
+    <div>
+      <div class="hero-issue">
+        <span>CDAO · GenAI.mil</span>
+        <span>EST. 2026</span>
+        <span>VOL. 01</span>
+      </div>
+      <h1 class="hero-h1">
+        Making<br>AI<br>
+        <span class="accent">Real.</span>
+      </h1>
+    </div>
+    <div class="hero-bottom">
+      <p class="hero-desc"><strong>Where the Pentagon meets the possible.</strong> Inside perspectives on deploying AI at scale inside the DoD — from someone actually doing it.</p>
+      <div class="hero-btn-group">
+        <a href="#" class="hero-btn filled">Start Reading</a>
+        <a href="#" class="hero-btn">Signal Stack</a>
+      </div>
+    </div>
+  </div>
+  <div class="hero-side">
+    <div class="hero-side-top">
+      <div class="latest-label">Latest Dispatch</div>
+      <h2 class="latest-title">What the latest model releases mean for government deployment</h2>
+      <p class="latest-excerpt">Everyone covered what dropped. Nobody covered what it means when your users can't paste classified data into it.</p>
+      <div class="latest-meta">
+        <span>March 2026</span>
+        <span>8 min read</span>
+      </div>
+    </div>
+    <div class="hero-side-numbers">
+      <div class="num-block"><div class="num-val">12</div><div class="num-label">Articles</div></div>
+      <div class="num-block"><div class="num-val">8</div><div class="num-label">Sources</div></div>
+      <div class="num-block"><div class="num-val">24</div><div class="num-label">Prompts</div></div>
+      <div class="num-block"><div class="num-val">16</div><div class="num-label">Tools</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="content-row">
+    <div class="content-header">
+      <span class="content-header-label">Writing — Recent</span>
+      <a href="#" class="content-header-link">All posts →</a>
+    </div>
+    <div class="post-cell">
+      <div class="post-num"><span>01</span><span class="post-tag-b cap">Capabilities</span></div>
+      <h3 class="post-title-b">What the latest model releases mean for government deployment</h3>
+      <p class="post-exc-b">Everyone covered what dropped. Nobody covered what it means for classified environments.</p>
+    </div>
+    <div class="post-cell">
+      <div class="post-num"><span>02</span><span class="post-tag-b">Enterprise</span></div>
+      <h3 class="post-title-b">Building an AI briefing system without social media</h3>
+      <p class="post-exc-b">The sources, workflow, and prompts for staying current without doom-scrolling.</p>
+    </div>
+    <div class="post-cell">
+      <div class="post-num"><span>03</span><span class="post-tag-b">Vendor</span></div>
+      <h3 class="post-title-b">What vendor AI demos never show you — and what to ask</h3>
+      <p class="post-exc-b">Four questions that separate real capability from slide-ware after hundreds of pitches.</p>
+    </div>
+  </div>
+</section>
+
+<section class="signal-bar">
+  <div class="signal-bar-label">
+    <h2>Signal Stack</h2>
+    <p>No noise. Just signal.</p>
+  </div>
+  <div class="signal-items">
+    <div class="signal-item-b">
+      <div class="si-num">01 / PODCAST</div>
+      <div class="si-name">Latent Space</div>
+      <div class="si-desc">Deep on what models can actually do and how teams deploy at scale.</div>
+    </div>
+    <div class="signal-item-b">
+      <div class="si-num">02 / NEWSLETTER</div>
+      <div class="si-name">Import AI</div>
+      <div class="si-desc">Jack Clark. Capabilities + policy. Written for decision-makers.</div>
+    </div>
+    <div class="signal-item-b">
+      <div class="si-num">03 / BLOG</div>
+      <div class="si-name">Simon Willison</div>
+      <div class="si-desc">Tests everything that ships. No hype. Just findings.</div>
+    </div>
+    <div class="signal-item-b">
+      <div class="si-num">04 / ANALYSIS</div>
+      <div class="si-name">Stratechery</div>
+      <div class="si-desc">Why vendors make moves. Essential for the commercial landscape.</div>
+    </div>
+  </div>
+</section>
+
+<section class="newsletter-b">
+  <div class="nl-left-b">
+    <h2>The Brief.</h2>
+    <p>Signal over noise. AI capabilities, enterprise deployment, and vendor reality — from inside the DoD. No algorithm, no filler.</p>
+  </div>
+  <div class="nl-right-b">
+    <label>Your Email</label>
+    <input class="nl-input-b" type="email" placeholder="name@email.gov">
+    <button class="nl-btn-b">Subscribe to The Brief →</button>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-cell"><span class="footer-logo-b">deya<span>.dev</span></span></div>
+  <div class="footer-cell center">CDAO · GenAI.mil · 2026</div>
+  <div class="footer-cell right">Duck Ops Cleared 🦆</div>
+</footer>
+
+</body>
+</html>
