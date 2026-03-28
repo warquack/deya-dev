@@ -1,0 +1,122 @@
+---
+import Base from '../layouts/Base.astro';
+
+const categories = [
+  {
+    name: 'DoD / Government First',
+    note: 'Start here. These are authorized for government use.',
+    tools: [
+      { icon: '⊞', name: 'GenAI.mil', desc: 'The DoD enterprise AI platform. Start here for anything work-related.', tags: ['gov-authorized', 'NIPR'], url: 'https://genai.mil', rating: '★★★★★' },
+      { icon: '🏛', name: 'FedRAMP Marketplace', desc: 'Authoritative list of cloud services authorized for federal government use. Check before you deploy anything.', tags: ['compliance', 'reference'], url: 'https://marketplace.fedramp.gov', rating: '★★★★★' },
+    ],
+  },
+  {
+    name: 'AI-Powered Research',
+    note: 'Unclassified data only. Do not paste sensitive information.',
+    tools: [
+      { icon: '🔍', name: 'Perplexity', desc: 'AI-powered search with citations. Better than Google for research on AI developments. Free tier is sufficient.', tags: ['research', 'free tier'], url: 'https://perplexity.ai', rating: '★★★★☆' },
+      { icon: '📚', name: 'NotebookLM', desc: "Google's research synthesis tool. Upload documents, get AI-powered analysis. Excellent for processing long reports, policy docs, and research papers.", tags: ['research', 'synthesis'], url: 'https://notebooklm.google.com', rating: '★★★★☆' },
+      { icon: '🤖', name: 'Claude.ai', desc: 'Best for long-form analysis, writing assistance, and complex reasoning tasks. Strong on nuance and following detailed instructions.', tags: ['writing', 'analysis'], url: 'https://claude.ai', rating: '★★★★★' },
+    ],
+  },
+  {
+    name: 'Productivity & Workflow',
+    note: 'General purpose tools useful for AI-adjacent work.',
+    tools: [
+      { icon: '✎', name: 'Notion AI', desc: 'Knowledge management with AI features built in. Good for building personal wikis, project tracking, and document creation.', tags: ['productivity', 'notes'], url: 'https://notion.so', rating: '★★★☆☆' },
+      { icon: '▶', name: 'Otter.ai', desc: 'AI meeting transcription and summarization. Useful for capturing vendor briefings and internal meetings. Check recording consent requirements.', tags: ['meetings', 'transcription'], url: 'https://otter.ai', rating: '★★★★☆' },
+    ],
+  },
+  {
+    name: 'Developer & Technical',
+    note: 'For building and evaluating AI systems.',
+    tools: [
+      { icon: '⌨', name: 'Claude Code', desc: 'AI coding assistant in your terminal. The most capable coding tool currently available. This site was built with it.', tags: ['coding', 'terminal'], url: 'https://claude.ai/code', rating: '★★★★★' },
+      { icon: '🧪', name: 'LM Studio', desc: 'Run open-source models locally. Useful for experimenting with models without sending data to external APIs.', tags: ['local', 'open-source'], url: 'https://lmstudio.ai', rating: '★★★★☆' },
+    ],
+  },
+];
+---
+
+<Base title="Tools" description="A curated directory of AI tools — with honest ratings and government data handling notes.">
+  <div class="page-wrap">
+    <header class="page-header">
+      <p class="eyebrow">Tools</p>
+      <h1 class="page-title">Tools I actually use</h1>
+      <p class="page-sub">No sponsored placements. Honest ratings. Government data handling notes included because most tool lists don't mention that and they should.</p>
+    </header>
+
+    <div class="warning-banner">
+      <span class="warning-icon">⚠</span>
+      <p>Do not paste classified, CUI, or sensitive government data into any commercial AI tool unless it is explicitly authorized for that classification level. When in doubt, use GenAI.mil.</p>
+    </div>
+
+    {categories.map(cat => (
+      <div class="category">
+        <div class="category-header">
+          <h2 class="category-title">{cat.name}</h2>
+          <span class="category-note">{cat.note}</span>
+        </div>
+        <div class="tool-grid">
+          {cat.tools.map(tool => (
+            <a href={tool.url} target="_blank" rel="noopener noreferrer" class="tool-card">
+              <div class="tool-top">
+                <div class="tool-icon">{tool.icon}</div>
+                <div>
+                  <div class="tool-name">{tool.name}</div>
+                  <div class="tool-rating">{tool.rating}</div>
+                </div>
+              </div>
+              <p class="tool-desc">{tool.desc}</p>
+              <div class="tool-tags">
+                {tool.tags.map(t => <span class="ttag">{t}</span>)}
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+</Base>
+
+<style>
+  .page-wrap { max-width: 900px; margin: 0 auto; padding: 120px 32px 80px; }
+  .page-header { margin-bottom: 40px; }
+  .eyebrow { font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+  .page-title { font-size: 40px; font-weight: 600; letter-spacing: -0.03em; color: var(--white); margin-bottom: 16px; }
+  .page-sub { font-size: 16px; color: var(--text); line-height: 1.7; }
+
+  .warning-banner {
+    display: flex; gap: 12px; align-items: flex-start;
+    background: rgba(245, 158, 11, 0.06); border: 1px solid rgba(245, 158, 11, 0.2);
+    border-radius: 10px; padding: 16px 20px; margin-bottom: 56px;
+  }
+  .warning-icon { font-size: 14px; color: #f59e0b; flex-shrink: 0; margin-top: 1px; }
+  .warning-banner p { font-size: 13px; color: #a0834a; line-height: 1.6; }
+
+  .category { margin-bottom: 48px; }
+  .category-header { margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+  .category-title { font-size: 14px; font-weight: 600; color: var(--secondary); margin-bottom: 4px; }
+  .category-note { font-family: 'Geist Mono', monospace; font-size: 11px; color: var(--mid); }
+  .tool-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+
+  .tool-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 11px;
+    padding: 20px; display: flex; flex-direction: column; gap: 12px;
+    transition: all 0.18s;
+  }
+  .tool-card:hover { border-color: var(--border-hover); transform: translateY(-1px); }
+  .tool-top { display: flex; gap: 12px; align-items: center; }
+  .tool-icon {
+    width: 38px; height: 38px; border-radius: 9px; flex-shrink: 0;
+    background: var(--accent-glow); border: 1px solid var(--accent-border);
+    display: flex; align-items: center; justify-content: center; font-size: 16px;
+  }
+  .tool-name { font-size: 14px; font-weight: 500; color: var(--primary); margin-bottom: 2px; }
+  .tool-rating { font-size: 12px; color: #f59e0b; letter-spacing: 0.05em; }
+  .tool-desc { font-size: 12px; color: var(--mid); line-height: 1.6; flex: 1; }
+  .tool-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .ttag { font-family: 'Geist Mono', monospace; font-size: 10px; padding: 2px 8px; border-radius: 100px; border: 1px solid var(--border); color: var(--muted); }
+
+  @media (max-width: 700px) { .tool-grid { grid-template-columns: 1fr; } }
+</style>

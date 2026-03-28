@@ -1,0 +1,127 @@
+---
+import Base from '../layouts/Base.astro';
+
+const sources = [
+  {
+    category: 'Capabilities & Enterprise',
+    items: [
+      { icon: '🎙', name: 'Latent Space Podcast', type: 'Podcast', freq: 'Weekly', url: 'https://www.latent.space', desc: 'Best single source on what models can actually do and how teams are deploying at scale. Builder and PM oriented — not hype journalism. Pick episodes on topics relevant to what you\'re building.', pills: ['capabilities', 'enterprise'] },
+      { icon: '📬', name: 'Import AI — Jack Clark', type: 'Newsletter', freq: 'Weekly', url: 'https://importai.substack.com', desc: 'Jack Clark is ex-OpenAI and ex-Anthropic. Writes specifically about AI capabilities, safety, and policy implications. Very CDAO-relevant framing — written for people who need to make decisions, not just spectators.', pills: ['capabilities', 'policy'] },
+      { icon: '✍️', name: "Simon Willison's Blog", type: 'Blog', freq: 'Daily', url: 'https://simonwillison.net', desc: 'Tests everything that ships and writes up what it can actually do. No hype, just findings. The most honest technical source on this list. Bookmark and check weekly.', pills: ['capabilities', 'technical'] },
+      { icon: '📰', name: 'The Batch — DeepLearning.ai', type: 'Newsletter', freq: 'Weekly', url: 'https://www.deeplearning.ai/the-batch', desc: "Andrew Ng's weekly. Solid balance of technical and industry coverage. Good for staying current without depth commitment.", pills: ['capabilities', 'enterprise'] },
+    ],
+  },
+  {
+    category: 'Vendor & Strategy',
+    items: [
+      { icon: '📊', name: 'Stratechery', type: 'Newsletter', freq: 'Weekly', url: 'https://stratechery.com', desc: "Ben Thompson. Best for understanding why companies are making moves, not just what. Essential for the vendor landscape — separates strategic decisions from noise. Worth the subscription.", pills: ['vendor', 'strategy'] },
+      { icon: '🗞', name: 'The Information', type: 'Publication', freq: 'Daily', url: 'https://www.theinformation.com', desc: 'Paywalled but worth it if you can expense it. Best sourcing on internal vendor dynamics — what\'s actually happening inside OpenAI, Google, Anthropic, Microsoft before it becomes public.', pills: ['vendor'] },
+    ],
+  },
+  {
+    category: 'Policy & Government',
+    items: [
+      { icon: '🏛', name: 'Georgetown CSET', type: 'Research', freq: 'Monthly', url: 'https://cset.georgetown.edu', desc: 'Best policy-adjacent AI analysis for government context. Publishes excellent research on AI governance, national security implications, and policy frameworks. Required reading for anyone at CDAO.', pills: ['policy', 'government'] },
+      { icon: '📋', name: 'NIST AI RMF', type: 'Framework', freq: 'As updated', url: 'https://airc.nist.gov', desc: 'National Institute of Standards and Technology AI Risk Management Framework. The authoritative federal guidance on AI governance and risk management. Know this document.', pills: ['policy', 'compliance'] },
+    ],
+  },
+  {
+    category: 'Primary Sources',
+    items: [
+      { icon: '🤖', name: 'Anthropic News', type: 'Blog', freq: 'As published', url: 'https://www.anthropic.com/news', desc: 'Go direct. Skip the middlemen. First-party announcements, research papers, and policy positions straight from the lab.', pills: ['capabilities'] },
+      { icon: '⚡', name: 'OpenAI Blog', type: 'Blog', freq: 'As published', url: 'https://openai.com/blog', desc: 'Same principle — direct from the source. Model releases, research updates, policy positions. Check weekly.', pills: ['capabilities'] },
+      { icon: '🔬', name: 'Google DeepMind', type: 'Blog', freq: 'As published', url: 'https://deepmind.google/blog', desc: 'Research-heavy. Especially relevant for multimodal capabilities and long-context work.', pills: ['capabilities', 'research'] },
+    ],
+  },
+];
+---
+
+<Base title="Signal Stack" description="How I stay current on AI without social media — curated sources for capabilities, enterprise deployment, and vendor context.">
+  <div class="page-wrap">
+    <header class="page-header">
+      <p class="eyebrow">Signal Stack</p>
+      <h1 class="page-title">How I stay current</h1>
+      <p class="page-sub">No social media. No doom-scrolling. Just high-signal sources — curated for capabilities, enterprise deployment, and vendor context. About 2-3 hours a week gets you fully covered.</p>
+    </header>
+
+    <div class="schedule-card">
+      <p class="schedule-label">Weekly Rhythm</p>
+      <div class="schedule-grid">
+        <div class="schedule-item"><span class="schedule-when">Daily (5 min)</span><span class="schedule-what">TLDR AI in your inbox — catch anything breaking</span></div>
+        <div class="schedule-item"><span class="schedule-when">Weekly (1-2 hrs)</span><span class="schedule-what">Import AI + Latent Space + direct lab blogs</span></div>
+        <div class="schedule-item"><span class="schedule-when">Monthly</span><span class="schedule-what">Georgetown CSET + RAND AI policy briefs</span></div>
+      </div>
+    </div>
+
+    {sources.map(group => (
+      <div class="source-group">
+        <h2 class="group-title">{group.category}</h2>
+        <div class="source-list">
+          {group.items.map(source => (
+            <a href={source.url} target="_blank" rel="noopener noreferrer" class="source-card">
+              <div class="source-icon">{source.icon}</div>
+              <div class="source-body">
+                <div class="source-header">
+                  <span class="source-name">{source.name}</span>
+                  <div class="source-meta">
+                    <span class="source-type">{source.type}</span>
+                    <span class="source-freq">{source.freq}</span>
+                  </div>
+                </div>
+                <p class="source-desc">{source.desc}</p>
+                <div class="source-pills">
+                  {source.pills.map(p => <span class="spill">{p}</span>)}
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+</Base>
+
+<style>
+  .page-wrap { max-width: 860px; margin: 0 auto; padding: 120px 32px 80px; }
+  .page-header { margin-bottom: 48px; }
+  .eyebrow { font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+  .page-title { font-size: 40px; font-weight: 600; letter-spacing: -0.03em; color: var(--white); margin-bottom: 16px; }
+  .page-sub { font-size: 16px; color: var(--text); line-height: 1.7; }
+
+  .schedule-card {
+    background: var(--surface); border: 1px solid var(--accent-border); border-radius: 12px;
+    padding: 24px; margin-bottom: 56px;
+    background: linear-gradient(135deg, var(--surface), rgba(99,102,241,0.05));
+  }
+  .schedule-label { font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
+  .schedule-grid { display: flex; flex-direction: column; gap: 10px; }
+  .schedule-item { display: flex; gap: 16px; align-items: baseline; }
+  .schedule-when { font-family: 'Geist Mono', monospace; font-size: 12px; color: var(--secondary); min-width: 140px; flex-shrink: 0; }
+  .schedule-what { font-size: 13px; color: var(--text); }
+
+  .source-group { margin-bottom: 48px; }
+  .group-title { font-size: 14px; font-weight: 600; color: var(--secondary); letter-spacing: -0.01em; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+  .source-list { display: flex; flex-direction: column; gap: 10px; }
+  .source-card {
+    display: flex; gap: 16px; align-items: flex-start;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+    padding: 20px; transition: all 0.18s;
+  }
+  .source-card:hover { border-color: var(--border-hover); background: rgba(255,255,255,0.02); }
+  .source-icon {
+    width: 38px; height: 38px; border-radius: 9px; flex-shrink: 0;
+    background: var(--accent-glow); border: 1px solid var(--accent-border);
+    display: flex; align-items: center; justify-content: center; font-size: 16px;
+  }
+  .source-body { flex: 1; min-width: 0; }
+  .source-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .source-name { font-size: 14px; font-weight: 500; color: var(--primary); }
+  .source-meta { display: flex; gap: 8px; }
+  .source-type, .source-freq {
+    font-family: 'Geist Mono', monospace; font-size: 10px; color: var(--muted);
+    padding: 2px 8px; border-radius: 100px; border: 1px solid var(--border);
+  }
+  .source-desc { font-size: 13px; color: var(--mid); line-height: 1.6; margin-bottom: 10px; }
+  .source-pills { display: flex; gap: 6px; }
+  .spill { font-family: 'Geist Mono', monospace; font-size: 10px; padding: 2px 8px; border-radius: 100px; border: 1px solid var(--border); color: var(--muted); }
+</style>

@@ -1,0 +1,288 @@
+---
+import Base from '../layouts/Base.astro';
+
+const posts = [
+  {
+    tag: 'Capabilities',
+    title: 'What the latest model releases actually mean for government deployment',
+    excerpt: "Everyone covered what dropped. Nobody covered what it means when your users can't paste classified data into it.",
+    date: 'Mar 2026',
+    readTime: '8 min read',
+    slug: 'model-releases-government-deployment',
+  },
+  {
+    tag: 'Enterprise',
+    title: 'Building an AI briefing system without social media',
+    excerpt: "The sources, the workflow, and the prompts I use to stay current when doom-scrolling isn't an option.",
+    date: 'Feb 2026',
+    readTime: '6 min read',
+    slug: 'ai-briefing-without-social-media',
+  },
+  {
+    tag: 'Vendor',
+    title: 'What vendor AI demos never show you — and what to ask',
+    excerpt: 'Four questions that separate real capability from slide-ware, after sitting through hundreds of pitches.',
+    date: 'Feb 2026',
+    readTime: '10 min read',
+    slug: 'vendor-ai-demo-questions',
+  },
+];
+
+const signals = [
+  { icon: '🎙', name: 'Latent Space Podcast', desc: 'Best single source on what models can actually do and how teams deploy at scale. Builder/PM lens.', pills: ['capabilities', 'enterprise'] },
+  { icon: '📬', name: 'Import AI — Jack Clark', desc: 'Weekly from ex-Anthropic. Capabilities + policy implications, written for decision-makers.', pills: ['capabilities', 'policy'] },
+  { icon: '✍️', name: "Simon Willison's Blog", desc: 'Tests everything that ships and writes up what it can actually do. No hype, just findings.', pills: ['capabilities', 'technical'] },
+  { icon: '📊', name: 'Stratechery', desc: 'Ben Thompson on why vendors are making moves. Essential for understanding the commercial landscape.', pills: ['vendor', 'strategy'] },
+];
+---
+
+<Base title="deya.dev">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      Program Manager &nbsp;·&nbsp; CDAO &nbsp;·&nbsp; GenAI.mil
+    </div>
+    <h1 class="hero-h1">
+      Making AI real<br>
+      where it <span class="grad">actually matters.</span>
+    </h1>
+    <p class="hero-sub">
+      Inside perspectives on deploying AI at scale inside the DoD — capabilities,
+      enterprise patterns, vendor reality, and the gap between the hype and the mission.
+    </p>
+    <div class="hero-actions">
+      <a href="/writing" class="hero-btn">Start Reading</a>
+      <a href="/signal-stack" class="hero-btn-ghost">Signal Stack →</a>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat"><div class="stat-num">12</div><div class="stat-label">articles published</div></div>
+    <div class="stat"><div class="stat-num">8</div><div class="stat-label">curated sources</div></div>
+    <div class="stat"><div class="stat-num">24</div><div class="stat-label">prompts in library</div></div>
+    <div class="stat"><div class="stat-num">16</div><div class="stat-label">tools reviewed</div></div>
+  </div>
+
+  <!-- WRITING -->
+  <section class="section">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">Writing</p>
+        <h2 class="section-title">Recent dispatches</h2>
+      </div>
+      <a href="/writing" class="section-link">All posts →</a>
+    </div>
+    <div class="posts-grid">
+      {posts.map(post => (
+        <a href={`/writing/${post.slug}`} class="post-card">
+          <span class="tag-pill">{post.tag}</span>
+          <h3 class="post-title">{post.title}</h3>
+          <p class="post-excerpt">{post.excerpt}</p>
+          <div class="post-footer">
+            <span>{post.date}</span>
+            <span>{post.readTime}</span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SIGNAL STACK -->
+  <section class="section">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">Signal Stack</p>
+        <h2 class="section-title">How I stay current</h2>
+      </div>
+      <a href="/signal-stack" class="section-link">Full list →</a>
+    </div>
+    <div class="signal-grid">
+      {signals.map(s => (
+        <div class="signal-card">
+          <div class="signal-icon">{s.icon}</div>
+          <div>
+            <div class="signal-name">{s.name}</div>
+            <div class="signal-desc">{s.desc}</div>
+            <div class="signal-pills">
+              {s.pills.map(p => <span class="spill">{p}</span>)}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section id="subscribe" class="newsletter-wrap">
+    <div class="newsletter">
+      <div class="nl-left">
+        <h2 class="nl-title">
+          The signal,<br>not the <span>noise.</span>
+        </h2>
+        <p class="nl-sub">
+          A regular dispatch on AI capabilities, enterprise deployment, and vendor reality —
+          through the lens of someone actually deploying GenAI inside the DoD. No algorithm, no filler.
+        </p>
+      </div>
+      <form class="nl-form">
+        <input class="nl-input" type="email" placeholder="your@email.gov" required />
+        <button type="submit" class="nl-btn">Subscribe to the Brief</button>
+        <p class="nl-note">No spam. Unsubscribe anytime.</p>
+      </form>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    padding: 152px 32px 96px;
+    max-width: 900px; margin: 0 auto; text-align: center;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.05em;
+    color: var(--text); background: var(--surface);
+    border: 1px solid var(--border); padding: 6px 14px; border-radius: 100px;
+    margin-bottom: 40px;
+  }
+  .badge-dot {
+    width: 6px; height: 6px; border-radius: 50%; background: var(--green);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(34,197,94,0.4); }
+    50% { opacity: 0.7; box-shadow: 0 0 0 4px rgba(34,197,94,0); }
+  }
+  .hero-h1 {
+    font-size: clamp(44px, 7vw, 80px); font-weight: 600; line-height: 1.05;
+    letter-spacing: -0.04em; color: var(--white); margin-bottom: 24px;
+  }
+  .grad {
+    background: linear-gradient(135deg, #a78bfa 0%, #6366f1 40%, #38bdf8 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero-sub {
+    font-size: 17px; line-height: 1.7; color: var(--text);
+    max-width: 560px; margin: 0 auto 48px;
+  }
+  .hero-actions { display: flex; gap: 12px; justify-content: center; }
+  .hero-btn {
+    font-size: 14px; font-weight: 500; padding: 11px 24px; border-radius: 8px;
+    background: var(--white); color: var(--bg); transition: opacity 0.15s;
+  }
+  .hero-btn:hover { opacity: 0.9; }
+  .hero-btn-ghost {
+    font-size: 14px; color: var(--secondary); padding: 11px 24px; border-radius: 8px;
+    border: 1px solid var(--border-hover); transition: all 0.15s;
+  }
+  .hero-btn-ghost:hover { color: var(--white); border-color: rgba(255,255,255,0.2); }
+
+  .stats {
+    display: flex; justify-content: center;
+    border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  }
+  .stat {
+    flex: 1; max-width: 200px; padding: 32px 24px; text-align: center;
+    border-right: 1px solid var(--border);
+  }
+  .stat:last-child { border-right: none; }
+  .stat-num { font-size: 32px; font-weight: 600; letter-spacing: -0.03em; color: var(--white); margin-bottom: 4px; }
+  .stat-label { font-family: 'Geist Mono', monospace; font-size: 11px; color: var(--mid); letter-spacing: 0.04em; }
+
+  .section { max-width: 1100px; margin: 0 auto; padding: 80px 32px; }
+  .section-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 40px; }
+  .eyebrow {
+    font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 8px;
+  }
+  .section-title { font-size: 32px; font-weight: 600; letter-spacing: -0.03em; color: var(--white); }
+  .section-link {
+    font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--accent); transition: opacity 0.15s;
+  }
+  .section-link:hover { opacity: 0.75; }
+
+  .posts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .post-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    padding: 28px; transition: all 0.2s; position: relative; overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  .post-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, var(--accent-glow), transparent);
+    opacity: 0; transition: opacity 0.2s; border-radius: inherit;
+  }
+  .post-card:hover { border-color: var(--accent-border); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+  .post-card:hover::before { opacity: 1; }
+  .post-card :global(.tag-pill) { margin-bottom: 16px; position: relative; }
+  .post-title { font-size: 15px; font-weight: 500; color: var(--primary); line-height: 1.4; margin-bottom: 10px; position: relative; }
+  .post-excerpt { font-size: 13px; color: var(--mid); line-height: 1.6; flex: 1; position: relative; }
+  .post-footer {
+    margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between;
+    font-family: 'Geist Mono', monospace; font-size: 11px; color: var(--muted); position: relative;
+  }
+
+  .divider { height: 1px; background: var(--border); margin: 0 32px; }
+
+  .signal-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .signal-card {
+    display: flex; gap: 16px; align-items: flex-start;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 20px; transition: border-color 0.2s;
+  }
+  .signal-card:hover { border-color: var(--border-hover); }
+  .signal-icon {
+    width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0;
+    background: var(--accent-glow); border: 1px solid var(--accent-border);
+    display: flex; align-items: center; justify-content: center; font-size: 15px;
+  }
+  .signal-name { font-size: 13px; font-weight: 500; color: var(--primary); margin-bottom: 5px; }
+  .signal-desc { font-size: 12px; color: var(--mid); line-height: 1.55; }
+  .signal-pills { margin-top: 10px; display: flex; gap: 6px; }
+  .spill {
+    font-family: 'Geist Mono', monospace; font-size: 10px; padding: 2px 8px; border-radius: 100px;
+    border: 1px solid var(--border); color: var(--muted);
+  }
+
+  .newsletter-wrap { padding: 0 32px 80px; }
+  .newsletter {
+    max-width: 1100px; margin: 0 auto;
+    background: linear-gradient(135deg, var(--surface) 0%, rgba(99,102,241,0.05) 100%);
+    border: 1px solid var(--border); border-radius: 16px; padding: 64px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;
+  }
+  .nl-title { font-size: 36px; font-weight: 600; letter-spacing: -0.03em; color: var(--white); line-height: 1.1; margin-bottom: 12px; }
+  .nl-title span {
+    background: linear-gradient(135deg, #a78bfa, #6366f1);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .nl-sub { font-size: 14px; color: var(--text); line-height: 1.7; }
+  .nl-form { display: flex; flex-direction: column; gap: 10px; }
+  .nl-input {
+    padding: 12px 16px; background: var(--bg); border: 1px solid var(--border);
+    border-radius: 8px; color: var(--white); font-family: 'Geist', sans-serif;
+    font-size: 14px; outline: none; transition: border-color 0.2s;
+  }
+  .nl-input:focus { border-color: var(--accent); }
+  .nl-input::placeholder { color: var(--mid); }
+  .nl-btn {
+    padding: 12px 24px; background: var(--accent); color: #fff; border: none;
+    border-radius: 8px; font-family: 'Geist', sans-serif; font-size: 14px; font-weight: 500;
+    cursor: pointer; transition: opacity 0.15s;
+  }
+  .nl-btn:hover { opacity: 0.85; }
+  .nl-note { font-size: 12px; color: var(--muted); }
+
+  @media (max-width: 768px) {
+    .posts-grid, .signal-grid { grid-template-columns: 1fr; }
+    .newsletter { grid-template-columns: 1fr; padding: 40px 24px; gap: 40px; }
+    .stats { flex-wrap: wrap; }
+    .stat { min-width: 50%; }
+  }
+</style>

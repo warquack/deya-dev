@@ -1,0 +1,36 @@
+---
+const footerLinks = [
+  { href: '/writing', label: 'Writing' },
+  { href: '/signal-stack', label: 'Signal Stack' },
+  { href: '/prompts', label: 'Prompts' },
+  { href: '/tools', label: 'Tools' },
+  { href: '/about', label: 'About' },
+];
+---
+
+<footer>
+  <span class="footer-logo">deya<span>.dev</span></span>
+  <nav class="footer-nav">
+    {footerLinks.map(link => (
+      <a href={link.href}>{link.label}</a>
+    ))}
+  </nav>
+  <span class="footer-right">Duck Ops Cleared 🦆</span>
+</footer>
+
+<style>
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 28px 32px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-logo {
+    font-family: 'Geist Mono', monospace;
+    font-size: 13px; font-weight: 500; color: var(--secondary);
+  }
+  .footer-logo span { color: var(--accent); }
+  .footer-nav { display: flex; gap: 24px; }
+  .footer-nav a { font-size: 13px; color: var(--mid); transition: color 0.15s; }
+  .footer-nav a:hover { color: var(--secondary); }
+  .footer-right { font-size: 12px; color: var(--muted); }
+</style>

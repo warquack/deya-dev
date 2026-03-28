@@ -1,0 +1,90 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="About" description="Deya Banisakher — Program Manager at CDAO, working on GenAI.mil.">
+  <div class="page-wrap">
+    <div class="about-grid">
+      <div class="about-main">
+        <p class="eyebrow">About</p>
+        <h1 class="page-title">Deya Banisakher</h1>
+        <p class="role">Program Manager · CDAO · GenAI.mil</p>
+
+        <div class="bio">
+          <p>I'm a Program Manager at the Chief Digital and Artificial Intelligence Office (CDAO), where I work on GenAI.mil — the DoD's enterprise AI platform.</p>
+          <p>My job sits at the intersection of Silicon Valley and the Pentagon: taking the commercial AI ecosystem and figuring out what it actually means for government users operating in classified environments, at scale, with compliance requirements that commercial deployments don't have to think about.</p>
+          <p>I built this site because I was tired of trying to stay current on AI without social media — and realized that building a system to do that, and explaining what I was learning along the way, was worth sharing. If you're in government, defense, or enterprise tech trying to make sense of the same landscape, I hope this is useful.</p>
+          <p>The "Doers" philosophy: if you understand the problem clearly enough, you have an obligation to act on it. That's why any of this gets written down.</p>
+        </div>
+
+        <div class="principles">
+          <h2 class="principles-title">What I write about</h2>
+          <div class="principle-list">
+            <div class="principle"><span class="p-num">01</span><div><strong>Foundation model capabilities</strong> — what models can actually do now, not what the demos show</div></div>
+            <div class="principle"><span class="p-num">02</span><div><strong>Enterprise deployment patterns</strong> — how AI actually gets integrated into real workflows at scale</div></div>
+            <div class="principle"><span class="p-num">03</span><div><strong>Vendor landscape</strong> — what's changing in the commercial AI ecosystem and why it matters</div></div>
+            <div class="principle"><span class="p-num">04</span><div><strong>Policy & compliance</strong> — the regulatory and governance layer that government AI can't ignore</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-side">
+        <div class="side-card">
+          <p class="side-label">Currently</p>
+          <p class="side-value">Program Manager at CDAO</p>
+          <p class="side-sub">Working on GenAI.mil</p>
+        </div>
+        <div class="side-card">
+          <p class="side-label">Location</p>
+          <p class="side-value">Washington, D.C. area</p>
+        </div>
+        <div class="side-card">
+          <p class="side-label">Focus areas</p>
+          <div class="tag-stack">
+            <span class="tag-pill">GenAI</span>
+            <span class="tag-pill">DoD</span>
+            <span class="tag-pill">Enterprise AI</span>
+            <span class="tag-pill">Program Mgmt</span>
+          </div>
+        </div>
+        <div class="side-card newsletter-side">
+          <p class="side-label">The Brief</p>
+          <p class="side-sub" style="margin-bottom: 16px;">Get the signal, not the noise — AI updates through the lens of someone deploying it inside the DoD.</p>
+          <a href="/#subscribe" class="subscribe-link">Subscribe →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .page-wrap { max-width: 1000px; margin: 0 auto; padding: 120px 32px 80px; }
+  .eyebrow { font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+  .about-grid { display: grid; grid-template-columns: 1fr 280px; gap: 64px; align-items: start; }
+  .page-title { font-size: 48px; font-weight: 600; letter-spacing: -0.03em; color: var(--white); margin-bottom: 8px; }
+  .role { font-family: 'Geist Mono', monospace; font-size: 13px; color: var(--accent); margin-bottom: 40px; }
+  .bio { display: flex; flex-direction: column; gap: 16px; margin-bottom: 48px; }
+  .bio p { font-size: 16px; color: var(--text); line-height: 1.8; }
+  .principles-title { font-size: 14px; font-weight: 600; color: var(--secondary); margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+  .principle-list { display: flex; flex-direction: column; gap: 16px; }
+  .principle { display: flex; gap: 16px; align-items: flex-start; font-size: 14px; color: var(--text); line-height: 1.6; }
+  .principle strong { color: var(--primary); }
+  .p-num { font-family: 'Geist Mono', monospace; font-size: 11px; color: var(--muted); padding-top: 2px; flex-shrink: 0; min-width: 20px; }
+
+  .about-side { display: flex; flex-direction: column; gap: 12px; }
+  .side-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px; }
+  .side-label { font-family: 'Geist Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mid); margin-bottom: 6px; }
+  .side-value { font-size: 14px; font-weight: 500; color: var(--primary); margin-bottom: 2px; }
+  .side-sub { font-size: 12px; color: var(--mid); }
+  .tag-stack { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .newsletter-side { background: linear-gradient(135deg, var(--surface), rgba(99,102,241,0.05)); border-color: var(--accent-border); }
+  .subscribe-link {
+    display: inline-block; padding: 9px 18px; background: var(--accent); color: #fff;
+    border-radius: 7px; font-size: 13px; font-weight: 500; transition: opacity 0.15s;
+  }
+  .subscribe-link:hover { opacity: 0.85; }
+
+  @media (max-width: 768px) {
+    .about-grid { grid-template-columns: 1fr; gap: 48px; }
+  }
+</style>

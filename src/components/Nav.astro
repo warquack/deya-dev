@@ -1,0 +1,68 @@
+---
+const navLinks = [
+  { href: '/writing', label: 'Writing' },
+  { href: '/signal-stack', label: 'Signal Stack' },
+  { href: '/prompts', label: 'Prompts' },
+  { href: '/tools', label: 'Tools' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<nav>
+  <div class="nav-left">
+    <a href="/" class="nav-logo">deya<span>.dev</span></a>
+    <div class="nav-links">
+      {navLinks.map(link => (
+        <a
+          href={link.href}
+          class:list={['nav-link', { active: currentPath.startsWith(link.href) }]}
+        >
+          {link.label}
+        </a>
+      ))}
+    </div>
+  </div>
+  <div class="nav-right">
+    <a href="/about" class="nav-btn">About</a>
+    <a href="/#subscribe" class="nav-btn-primary">Subscribe</a>
+  </div>
+</nav>
+
+<style>
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 32px; height: 56px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(8, 8, 8, 0.85);
+    backdrop-filter: blur(20px) saturate(180%);
+  }
+  .nav-left { display: flex; align-items: center; gap: 32px; }
+  .nav-logo {
+    font-family: 'Geist Mono', monospace;
+    font-size: 14px; font-weight: 500; color: var(--white);
+    letter-spacing: -0.01em;
+  }
+  .nav-logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 4px; }
+  .nav-link {
+    font-size: 13px; color: var(--text); padding: 6px 12px;
+    border-radius: 6px; transition: all 0.15s;
+  }
+  .nav-link:hover, .nav-link.active {
+    background: rgba(255,255,255,0.05); color: var(--primary);
+  }
+  .nav-right { display: flex; align-items: center; gap: 10px; }
+  .nav-btn {
+    font-size: 13px; font-weight: 500; padding: 7px 16px; border-radius: 6px;
+    border: 1px solid var(--border-hover); color: var(--secondary); transition: all 0.15s;
+  }
+  .nav-btn:hover { color: var(--white); border-color: rgba(255,255,255,0.2); }
+  .nav-btn-primary {
+    background: var(--accent); color: #fff; border: none;
+    padding: 7px 16px; font-size: 13px; font-weight: 500; border-radius: 6px;
+    transition: opacity 0.15s;
+  }
+  .nav-btn-primary:hover { opacity: 0.85; }
+</style>
