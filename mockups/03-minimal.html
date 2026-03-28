@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>deya.dev — Direction 03: Minimal</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #080808;
+    --surface: #0f0f0f;
+    --border: rgba(255,255,255,0.06);
+    --border-hover: rgba(255,255,255,0.12);
+    --muted: #333;
+    --mid: #555;
+    --text: #888;
+    --secondary: #aaa;
+    --primary: #e8e8e8;
+    --white: #f5f5f5;
+    --accent: #6366f1;
+    --accent-glow: rgba(99, 102, 241, 0.15);
+    --accent-border: rgba(99, 102, 241, 0.3);
+    --green: #22c55e;
+  }
+
+  html {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Geist', system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 32px; height: 56px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(8, 8, 8, 0.85);
+    backdrop-filter: blur(20px) saturate(180%);
+  }
+  .nav-left { display: flex; align-items: center; gap: 32px; }
+  .nav-logo {
+    font-family: 'Geist Mono', monospace;
+    font-size: 14px; font-weight: 500; color: var(--white);
+    letter-spacing: -0.01em;
+  }
+  .nav-logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 4px; }
+  .nav-link {
+    font-size: 13px; color: var(--text); padding: 6px 12px;
+    border-radius: 6px; transition: all 0.15s;
+  }
+  .nav-link:hover { color: var(--primary); background: rgba(255,255,255,0.05); }
+  .nav-right { display: flex; align-items: center; gap: 12px; }
+  .nav-btn {
+    font-size: 13px; font-weight: 500;
+    padding: 7px 16px; border-radius: 6px;
+    border: 1px solid var(--border-hover);
+    color: var(--secondary); transition: all 0.15s;
+  }
+  .nav-btn:hover { color: var(--white); border-color: rgba(255,255,255,0.2); }
+  .nav-btn-primary {
+    background: var(--accent); color: #fff;
+    border: none; padding: 7px 16px;
+    font-size: 13px; font-weight: 500;
+    border-radius: 6px; transition: opacity 0.15s;
+  }
+  .nav-btn-primary:hover { opacity: 0.85; }
+
+  /* HERO */
+  .hero {
+    padding: 160px 32px 100px;
+    max-width: 900px; margin: 0 auto;
+    text-align: center;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px; letter-spacing: 0.05em;
+    color: var(--text); background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 6px 14px; border-radius: 100px;
+    margin-bottom: 40px;
+  }
+  .hero-badge-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--green);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100% { opacity: 1; box-shadow: 0 0 0 0 rgba(34,197,94,0.4); } 50% { opacity: 0.7; box-shadow: 0 0 0 4px rgba(34,197,94,0); } }
+  .hero-h1 {
+    font-size: clamp(44px, 7vw, 80px);
+    font-weight: 600; line-height: 1.05;
+    letter-spacing: -0.04em;
+    color: var(--white);
+    margin-bottom: 24px;
+  }
+  .hero-h1 .grad {
+    background: linear-gradient(135deg, #a78bfa 0%, #6366f1 40%, #38bdf8 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero-sub {
+    font-size: 17px; line-height: 1.7;
+    color: var(--text); max-width: 560px; margin: 0 auto 48px;
+  }
+  .hero-actions { display: flex; gap: 12px; justify-content: center; align-items: center; }
+  .hero-btn {
+    font-size: 14px; font-weight: 500;
+    padding: 11px 24px; border-radius: 8px;
+    background: var(--white); color: var(--bg);
+    transition: opacity 0.15s;
+  }
+  .hero-btn:hover { opacity: 0.9; }
+  .hero-btn-ghost {
+    font-size: 14px; color: var(--secondary);
+    padding: 11px 24px; border-radius: 8px;
+    border: 1px solid var(--border-hover);
+    transition: all 0.15s;
+  }
+  .hero-btn-ghost:hover { color: var(--white); border-color: rgba(255,255,255,0.2); }
+
+  /* STATS */
+  .stats {
+    display: flex; justify-content: center; gap: 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    margin: 0;
+  }
+  .stat {
+    flex: 1; max-width: 200px;
+    padding: 32px 24px; text-align: center;
+    border-right: 1px solid var(--border);
+  }
+  .stat:last-child { border-right: none; }
+  .stat-num {
+    font-size: 32px; font-weight: 600;
+    letter-spacing: -0.03em; color: var(--white);
+    margin-bottom: 4px;
+  }
+  .stat-label { font-size: 12px; color: var(--mid); }
+
+  /* SECTIONS */
+  .section { max-width: 1100px; margin: 0 auto; padding: 80px 32px; }
+  .section-eyebrow {
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 16px;
+  }
+  .section-title {
+    font-size: 32px; font-weight: 600;
+    letter-spacing: -0.03em; color: var(--white);
+    margin-bottom: 8px;
+  }
+  .section-sub { font-size: 15px; color: var(--text); margin-bottom: 48px; }
+
+  /* POSTS */
+  .posts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .post-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 28px;
+    transition: all 0.2s; cursor: pointer;
+    position: relative; overflow: hidden;
+  }
+  .post-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, var(--accent-glow), transparent);
+    opacity: 0; transition: opacity 0.2s;
+  }
+  .post-card:hover { border-color: var(--accent-border); }
+  .post-card:hover::before { opacity: 1; }
+  .post-tag-pill {
+    display: inline-block; margin-bottom: 16px;
+    font-family: 'Geist Mono', monospace;
+    font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 100px;
+    background: var(--accent-glow); color: var(--accent);
+    border: 1px solid var(--accent-border);
+  }
+  .post-card-title {
+    font-size: 15px; font-weight: 500; color: var(--primary);
+    line-height: 1.4; margin-bottom: 10px;
+  }
+  .post-card-excerpt { font-size: 13px; color: var(--mid); line-height: 1.6; }
+  .post-card-footer {
+    margin-top: 20px; padding-top: 16px;
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between;
+    font-size: 11px; color: var(--muted);
+    font-family: 'Geist Mono', monospace;
+  }
+
+  /* DIVIDER */
+  .divider { height: 1px; background: var(--border); margin: 0 32px; }
+
+  /* SIGNAL GRID */
+  .signal-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .signal-card {
+    display: flex; gap: 16px; align-items: flex-start;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 20px;
+    transition: border-color 0.2s; cursor: pointer;
+  }
+  .signal-card:hover { border-color: var(--border-hover); }
+  .signal-icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: var(--accent-glow); border: 1px solid var(--accent-border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; flex-shrink: 0;
+  }
+  .signal-body {}
+  .signal-name-m { font-size: 13px; font-weight: 500; color: var(--primary); margin-bottom: 4px; }
+  .signal-desc-m { font-size: 12px; color: var(--mid); line-height: 1.5; }
+  .signal-pills { margin-top: 10px; display: flex; gap: 6px; }
+  .pill {
+    font-family: 'Geist Mono', monospace;
+    font-size: 10px; padding: 2px 8px; border-radius: 100px;
+    border: 1px solid var(--border); color: var(--muted);
+  }
+
+  /* NEWSLETTER */
+  .newsletter-wrap {
+    margin: 0 32px 80px;
+    background: linear-gradient(135deg, var(--surface) 0%, rgba(99,102,241,0.05) 100%);
+    border: 1px solid var(--border);
+    border-radius: 16px; padding: 64px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;
+  }
+  .nl-title-m {
+    font-size: 36px; font-weight: 600;
+    letter-spacing: -0.03em; color: var(--white); line-height: 1.1;
+    margin-bottom: 12px;
+  }
+  .nl-title-m span {
+    background: linear-gradient(135deg, #a78bfa, #6366f1);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .nl-sub-m { font-size: 14px; color: var(--text); line-height: 1.7; }
+  .nl-form-m { display: flex; flex-direction: column; gap: 10px; }
+  .nl-input-m {
+    padding: 12px 16px; background: var(--bg);
+    border: 1px solid var(--border); border-radius: 8px;
+    color: var(--white); font-family: 'Geist', sans-serif; font-size: 14px;
+    outline: none; transition: border-color 0.2s;
+  }
+  .nl-input-m:focus { border-color: var(--accent); }
+  .nl-input-m::placeholder { color: var(--mid); }
+  .nl-btn-m {
+    padding: 12px 24px; background: var(--accent);
+    color: #fff; border: none; border-radius: 8px;
+    font-family: 'Geist', sans-serif; font-size: 14px; font-weight: 500;
+    cursor: pointer; transition: opacity 0.15s;
+  }
+  .nl-btn-m:hover { opacity: 0.85; }
+  .nl-note-m { font-size: 12px; color: var(--muted); }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 28px 32px;
+    display: flex; justify-content: space-between; align-items: center;
+    max-width: 100%;
+  }
+  .footer-logo-m {
+    font-family: 'Geist Mono', monospace;
+    font-size: 13px; font-weight: 500; color: var(--secondary);
+  }
+  .footer-logo-m span { color: var(--accent); }
+  .footer-nav { display: flex; gap: 24px; }
+  .footer-nav a { font-size: 13px; color: var(--mid); }
+  .footer-nav a:hover { color: var(--secondary); }
+  .footer-right-m { font-size: 12px; color: var(--muted); }
+
+  /* LABEL */
+  .mockup-label {
+    position: fixed; bottom: 20px; right: 20px; z-index: 999;
+    background: var(--accent); color: #fff;
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 8px 14px; border-radius: 6px;
+  }
+</style>
+</head>
+<body>
+
+<div class="mockup-label">Direction 03 — Minimal</div>
+
+<nav>
+  <div class="nav-left">
+    <a href="#" class="nav-logo">deya<span>.dev</span></a>
+    <div class="nav-links">
+      <a href="#" class="nav-link">Writing</a>
+      <a href="#" class="nav-link">Signal Stack</a>
+      <a href="#" class="nav-link">Prompts</a>
+      <a href="#" class="nav-link">Tools</a>
+    </div>
+  </div>
+  <div class="nav-right">
+    <a href="#" class="nav-btn">About</a>
+    <a href="#" class="nav-btn-primary">Subscribe</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-badge">
+    <span class="hero-badge-dot"></span>
+    Program Manager · CDAO · GenAI.mil
+  </div>
+  <h1 class="hero-h1">Making AI real<br>where it <span class="grad">actually matters.</span></h1>
+  <p class="hero-sub">Inside perspectives on deploying AI at scale inside the DoD — capabilities, enterprise patterns, and the gap between hype and mission.</p>
+  <div class="hero-actions">
+    <a href="#" class="hero-btn">Start Reading</a>
+    <a href="#" class="hero-btn-ghost">Signal Stack →</a>
+  </div>
+</section>
+
+<div class="stats">
+  <div class="stat">
+    <div class="stat-num">12</div>
+    <div class="stat-label">articles published</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">8</div>
+    <div class="stat-label">curated sources</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">24</div>
+    <div class="stat-label">prompts in library</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">16</div>
+    <div class="stat-label">tools reviewed</div>
+  </div>
+</div>
+
+<section class="section">
+  <p class="section-eyebrow">Writing</p>
+  <h2 class="section-title">Recent dispatches</h2>
+  <p class="section-sub">Perspectives from inside the DoD's GenAI program.</p>
+  <div class="posts-grid">
+    <div class="post-card">
+      <span class="post-tag-pill">Capabilities</span>
+      <h3 class="post-card-title">What the latest model releases mean for government deployment</h3>
+      <p class="post-card-excerpt">Everyone covered what dropped. Nobody covered what it means when your users operate in classified environments.</p>
+      <div class="post-card-footer"><span>Mar 2026</span><span>8 min read</span></div>
+    </div>
+    <div class="post-card">
+      <span class="post-tag-pill">Enterprise</span>
+      <h3 class="post-card-title">Building an AI briefing system without social media</h3>
+      <p class="post-card-excerpt">The sources, the workflow, and the prompts I use to stay current when doom-scrolling isn't an option.</p>
+      <div class="post-card-footer"><span>Feb 2026</span><span>6 min read</span></div>
+    </div>
+    <div class="post-card">
+      <span class="post-tag-pill">Vendor</span>
+      <h3 class="post-card-title">What vendor AI demos never show you — and what to ask</h3>
+      <p class="post-card-excerpt">Four questions that separate real capability from slide-ware, after sitting through hundreds of pitches.</p>
+      <div class="post-card-footer"><span>Feb 2026</span><span>10 min read</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section class="section">
+  <p class="section-eyebrow">Signal Stack</p>
+  <h2 class="section-title">How I stay current</h2>
+  <p class="section-sub">No social media. Just high-signal sources — curated for capabilities, enterprise, and vendor context.</p>
+  <div class="signal-list">
+    <div class="signal-card">
+      <div class="signal-icon">🎙</div>
+      <div class="signal-body">
+        <div class="signal-name-m">Latent Space Podcast</div>
+        <div class="signal-desc-m">Best single source on what models can actually do and how teams deploy at scale. Builder/PM lens — not hype journalism.</div>
+        <div class="signal-pills"><span class="pill">capabilities</span><span class="pill">enterprise</span></div>
+      </div>
+    </div>
+    <div class="signal-card">
+      <div class="signal-icon">📬</div>
+      <div class="signal-body">
+        <div class="signal-name-m">Import AI — Jack Clark</div>
+        <div class="signal-desc-m">Weekly newsletter from ex-Anthropic. Capabilities + policy implications, written for decision-makers.</div>
+        <div class="signal-pills"><span class="pill">capabilities</span><span class="pill">policy</span></div>
+      </div>
+    </div>
+    <div class="signal-card">
+      <div class="signal-icon">✍️</div>
+      <div class="signal-body">
+        <div class="signal-name-m">Simon Willison's Blog</div>
+        <div class="signal-desc-m">Tests everything that ships and writes up what it can actually do. The most honest technical source on my list.</div>
+        <div class="signal-pills"><span class="pill">capabilities</span><span class="pill">technical</span></div>
+      </div>
+    </div>
+    <div class="signal-card">
+      <div class="signal-icon">📊</div>
+      <div class="signal-body">
+        <div class="signal-name-m">Stratechery</div>
+        <div class="signal-desc-m">Ben Thompson on why vendors are making moves. Essential for understanding the commercial landscape shifting beneath you.</div>
+        <div class="signal-pills"><span class="pill">vendor</span><span class="pill">strategy</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="newsletter-wrap">
+  <div>
+    <h2 class="nl-title-m">The signal,<br>not the <span>noise.</span></h2>
+    <p class="nl-sub-m">A regular dispatch on AI capabilities, enterprise deployment, and the vendor landscape — through the lens of someone actually deploying GenAI inside the DoD. No algorithm, no filler.</p>
+  </div>
+  <div class="nl-form-m">
+    <input class="nl-input-m" type="email" placeholder="your@email.gov">
+    <button class="nl-btn-m">Subscribe to the Brief</button>
+    <p class="nl-note-m">No spam. Unsubscribe anytime.</p>
+  </div>
+</div>
+
+<footer>
+  <span class="footer-logo-m">deya<span>.dev</span></span>
+  <nav class="footer-nav">
+    <a href="#">Writing</a>
+    <a href="#">Signal Stack</a>
+    <a href="#">Prompts</a>
+    <a href="#">Tools</a>
+  </nav>
+  <span class="footer-right-m">Duck Ops Cleared 🦆</span>
+</footer>
+
+</body>
+</html>

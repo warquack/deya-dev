@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>deya.dev — Direction 01: Editorial</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0a0a0a;
+    --off-black: #111111;
+    --dim: #1c1c1c;
+    --border: #2a2a2a;
+    --muted: #555;
+    --mid: #888;
+    --text: #d4d0c8;
+    --bright: #f0ece0;
+    --accent: #c8a96e;
+    --accent-dim: rgba(200, 169, 110, 0.12);
+  }
+
+  html { background: var(--black); color: var(--text); font-family: 'Inter', sans-serif; font-size: 16px; line-height: 1.6; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 48px; height: 60px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10, 10, 10, 0.92);
+    backdrop-filter: blur(12px);
+  }
+  .nav-logo {
+    font-family: 'DM Mono', monospace;
+    font-size: 14px; font-weight: 500;
+    letter-spacing: 0.08em; color: var(--bright);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a { font-size: 13px; color: var(--mid); text-decoration: none; letter-spacing: 0.04em; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--bright); }
+  .nav-cta {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 8px 16px; border: 1px solid var(--accent);
+    color: var(--accent); background: transparent; cursor: pointer;
+    text-decoration: none; transition: all 0.2s;
+  }
+  .nav-cta:hover { background: var(--accent); color: var(--black); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh; display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 60px;
+  }
+  .hero-left {
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 80px 64px 80px 48px;
+    border-right: 1px solid var(--border);
+  }
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 32px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .hero-eyebrow::before {
+    content: ''; display: block;
+    width: 24px; height: 1px; background: var(--accent);
+  }
+  .hero-headline {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(52px, 6vw, 88px);
+    line-height: 1.0; color: var(--bright);
+    margin-bottom: 32px;
+  }
+  .hero-headline em {
+    font-style: italic; color: var(--accent);
+  }
+  .hero-sub {
+    font-size: 17px; line-height: 1.7;
+    color: var(--mid); max-width: 420px;
+    margin-bottom: 48px;
+  }
+  .hero-actions { display: flex; gap: 16px; align-items: center; }
+  .btn-primary {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 14px 28px; background: var(--accent);
+    color: var(--black); font-weight: 500;
+    text-decoration: none; transition: opacity 0.2s;
+  }
+  .btn-primary:hover { opacity: 0.85; }
+  .btn-ghost {
+    font-size: 13px; color: var(--mid);
+    text-decoration: none; display: flex; align-items: center; gap: 6px;
+    transition: color 0.2s;
+  }
+  .btn-ghost:hover { color: var(--bright); }
+
+  .hero-right {
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 80px 48px;
+    background: var(--off-black);
+  }
+  .hero-stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 48px;
+  }
+  .featured-post {
+    border-top: 1px solid var(--border);
+    padding-top: 32px; margin-bottom: 24px;
+  }
+  .post-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 16px;
+  }
+  .post-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px; line-height: 1.2; color: var(--bright);
+    margin-bottom: 12px;
+  }
+  .post-excerpt { font-size: 14px; color: var(--mid); line-height: 1.6; }
+  .post-meta {
+    margin-top: 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; color: var(--muted);
+    display: flex; gap: 20px;
+  }
+
+  /* MARQUEE */
+  .marquee-bar {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: var(--dim); overflow: hidden;
+    padding: 12px 0;
+  }
+  .marquee-track {
+    display: flex; gap: 48px; width: max-content;
+    animation: marquee 25s linear infinite;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .marquee-track span.dot { color: var(--accent); }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* SECTIONS */
+  .section { padding: 96px 48px; border-top: 1px solid var(--border); }
+  .section-header {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 56px;
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 42px; color: var(--bright);
+  }
+  .section-link {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--accent); text-decoration: none;
+  }
+
+  /* POSTS GRID */
+  .posts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); }
+  .post-card { background: var(--black); padding: 32px; transition: background 0.2s; cursor: pointer; }
+  .post-card:hover { background: var(--dim); }
+  .post-card .post-tag { margin-bottom: 12px; }
+  .post-card .post-title { font-size: 20px; margin-bottom: 10px; }
+  .post-card .post-excerpt { font-size: 13px; }
+  .post-card .post-meta { margin-top: 24px; }
+
+  /* SIGNAL */
+  .signal-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .signal-card {
+    border: 1px solid var(--border); padding: 28px;
+    transition: border-color 0.2s;
+  }
+  .signal-card:hover { border-color: var(--accent); }
+  .signal-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px; font-weight: 500; color: var(--bright);
+    margin-bottom: 8px;
+  }
+  .signal-desc { font-size: 13px; color: var(--mid); line-height: 1.5; }
+  .signal-badge {
+    display: inline-block; margin-top: 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 3px 8px; border: 1px solid var(--border); color: var(--muted);
+  }
+  .signal-badge.high { border-color: var(--accent); color: var(--accent); }
+
+  /* NEWSLETTER */
+  .newsletter {
+    background: var(--dim); border: 1px solid var(--border);
+    padding: 64px; margin: 96px 48px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;
+  }
+  .newsletter-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 40px; line-height: 1.1; color: var(--bright);
+  }
+  .newsletter-title em { font-style: italic; color: var(--accent); }
+  .newsletter-sub { font-size: 14px; color: var(--mid); margin-top: 16px; line-height: 1.6; }
+  .newsletter-form { display: flex; flex-direction: column; gap: 12px; }
+  .newsletter-form input {
+    background: var(--black); border: 1px solid var(--border);
+    padding: 14px 18px; color: var(--bright); font-size: 14px;
+    font-family: 'Inter', sans-serif; outline: none;
+    transition: border-color 0.2s;
+  }
+  .newsletter-form input:focus { border-color: var(--accent); }
+  .newsletter-form input::placeholder { color: var(--muted); }
+  .newsletter-form button {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 14px; background: var(--accent); color: var(--black);
+    border: none; cursor: pointer; font-weight: 500;
+    transition: opacity 0.2s;
+  }
+  .newsletter-form button:hover { opacity: 0.85; }
+  .newsletter-note {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; color: var(--muted); letter-spacing: 0.05em;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 48px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-logo {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px; color: var(--muted);
+  }
+  .footer-logo span { color: var(--accent); }
+  .footer-right {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; color: var(--muted);
+    letter-spacing: 0.08em; text-transform: uppercase;
+  }
+
+  /* MOCKUP LABEL */
+  .mockup-label {
+    position: fixed; bottom: 20px; right: 20px; z-index: 999;
+    background: var(--accent); color: var(--black);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 8px 14px;
+  }
+</style>
+</head>
+<body>
+
+<div class="mockup-label">Direction 01 — Editorial</div>
+
+<nav>
+  <a href="#" class="nav-logo">deya<span>.dev</span></a>
+  <ul class="nav-links">
+    <li><a href="#">Writing</a></li>
+    <li><a href="#">Signal Stack</a></li>
+    <li><a href="#">Prompts</a></li>
+    <li><a href="#">Tools</a></li>
+  </ul>
+  <a href="#" class="nav-cta">Subscribe</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow">Program Manager · CDAO · GenAI.mil</p>
+    <h1 class="hero-headline">Making AI real where it <em>actually</em> matters.</h1>
+    <p class="hero-sub">Inside perspectives on deploying AI at scale inside the DoD — capabilities, enterprise patterns, vendor reality, and the gap between the hype and the mission.</p>
+    <div class="hero-actions">
+      <a href="#" class="btn-primary">Read the Brief</a>
+      <a href="#" class="btn-ghost">Explore Signal Stack →</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <p class="hero-stat-label">Latest dispatch</p>
+    <div class="featured-post">
+      <p class="post-tag">Capabilities</p>
+      <h2 class="post-title">What the latest model releases actually mean for government deployment</h2>
+      <p class="post-excerpt">Everyone covered what dropped. Nobody covered what it means when your users can't paste classified data into it. Here's what matters.</p>
+      <div class="post-meta">
+        <span>March 2026</span>
+        <span>8 min read</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="marquee-bar">
+  <div class="marquee-track">
+    <span>Capabilities</span><span class="dot">·</span>
+    <span>Enterprise Deployment</span><span class="dot">·</span>
+    <span>Vendor Landscape</span><span class="dot">·</span>
+    <span>Policy &amp; Compliance</span><span class="dot">·</span>
+    <span>GenAI.mil</span><span class="dot">·</span>
+    <span>CDAO</span><span class="dot">·</span>
+    <span>DoD AI</span><span class="dot">·</span>
+    <span>Foundation Models</span><span class="dot">·</span>
+    <span>Capabilities</span><span class="dot">·</span>
+    <span>Enterprise Deployment</span><span class="dot">·</span>
+    <span>Vendor Landscape</span><span class="dot">·</span>
+    <span>Policy &amp; Compliance</span><span class="dot">·</span>
+    <span>GenAI.mil</span><span class="dot">·</span>
+    <span>CDAO</span><span class="dot">·</span>
+    <span>DoD AI</span><span class="dot">·</span>
+    <span>Foundation Models</span><span class="dot">·</span>
+  </div>
+</div>
+
+<section class="section">
+  <div class="section-header">
+    <h2 class="section-title">Recent Writing</h2>
+    <a href="#" class="section-link">All posts →</a>
+  </div>
+  <div class="posts-grid">
+    <div class="post-card">
+      <p class="post-tag">Enterprise</p>
+      <h3 class="post-title">How I built a personal AI briefing system without social media</h3>
+      <p class="post-excerpt">The sources, the workflow, and the prompts I use to stay current when you can't doom-scroll Twitter.</p>
+      <div class="post-meta"><span>Mar 2026</span><span>6 min</span></div>
+    </div>
+    <div class="post-card">
+      <p class="post-tag">Vendor</p>
+      <h3 class="post-title">What vendor AI demos never show you — and what to ask instead</h3>
+      <p class="post-excerpt">After sitting through hundreds of pitches, here's the four questions that actually separate real capability from slide-ware.</p>
+      <div class="post-meta"><span>Feb 2026</span><span>10 min</span></div>
+    </div>
+    <div class="post-card">
+      <p class="post-tag">Capabilities</p>
+      <h3 class="post-title">Reasoning models in government: what actually changes</h3>
+      <p class="post-excerpt">The benchmark numbers are impressive. The deployment constraints are the real story.</p>
+      <div class="post-meta"><span>Feb 2026</span><span>7 min</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-header">
+    <h2 class="section-title">The Signal Stack</h2>
+    <a href="#" class="section-link">Full list →</a>
+  </div>
+  <div class="signal-grid">
+    <div class="signal-card">
+      <p class="signal-name">Latent Space Podcast</p>
+      <p class="signal-desc">Best single source on what models can actually do and how teams are deploying at scale. Builder and PM oriented — not hype journalism.</p>
+      <span class="signal-badge high">Capabilities</span>
+    </div>
+    <div class="signal-card">
+      <p class="signal-name">Import AI — Jack Clark</p>
+      <p class="signal-desc">Weekly. Ex-OpenAI/Anthropic. Capabilities plus policy implications. Written for people who need to make decisions, not just spectators.</p>
+      <span class="signal-badge high">Policy</span>
+    </div>
+    <div class="signal-card">
+      <p class="signal-name">Simon Willison's Blog</p>
+      <p class="signal-desc">Tests everything that ships and writes up what it can actually do. No hype, just findings. The most honest technical source on the list.</p>
+      <span class="signal-badge">Technical</span>
+    </div>
+    <div class="signal-card">
+      <p class="signal-name">Stratechery</p>
+      <p class="signal-desc">Ben Thompson on why companies are making moves, not just what. Essential for understanding the vendor landscape shifting beneath you.</p>
+      <span class="signal-badge">Vendor</span>
+    </div>
+  </div>
+</section>
+
+<div class="newsletter">
+  <div>
+    <h2 class="newsletter-title">The signal, not the <em>noise.</em></h2>
+    <p class="newsletter-sub">A regular dispatch on AI capabilities, enterprise deployment, and the vendor landscape — through the lens of someone actually building GenAI systems inside the DoD.</p>
+  </div>
+  <div class="newsletter-form">
+    <input type="email" placeholder="your@email.gov">
+    <button type="submit">Subscribe to the Brief</button>
+    <p class="newsletter-note">No spam. No algorithm. Just the things worth knowing.</p>
+  </div>
+</div>
+
+<footer>
+  <span class="footer-logo">deya<span>.dev</span></span>
+  <span class="footer-right">Duck Ops Cleared &nbsp;🦆</span>
+</footer>
+
+</body>
+</html>

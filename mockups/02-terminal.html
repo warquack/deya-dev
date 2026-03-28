@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>deya.dev — Direction 02: Terminal</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0d0d0d;
+    --surface: #131313;
+    --surface2: #181818;
+    --border: #222;
+    --green: #39d353;
+    --green-dim: rgba(57, 211, 83, 0.08);
+    --green-mid: rgba(57, 211, 83, 0.4);
+    --amber: #f5a623;
+    --red: #ff4444;
+    --blue: #58a6ff;
+    --muted: #444;
+    --mid: #666;
+    --text: #aaa;
+    --bright: #ddd;
+  }
+
+  html {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    cursor: default;
+  }
+
+  /* Scanline overlay */
+  html::after {
+    content: '';
+    position: fixed; inset: 0; z-index: 9999;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+    pointer-events: none;
+  }
+
+  /* WINDOW CHROME */
+  .window {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+  }
+  .titlebar {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; gap: 0;
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    padding: 0;
+  }
+  .titlebar-dots {
+    display: flex; gap: 8px; align-items: center;
+    padding: 14px 16px;
+    border-right: 1px solid var(--border);
+  }
+  .dot-r { width: 12px; height: 12px; border-radius: 50%; background: #ff5f57; }
+  .dot-y { width: 12px; height: 12px; border-radius: 50%; background: #febc2e; }
+  .dot-g { width: 12px; height: 12px; border-radius: 50%; background: #28c840; }
+  .titlebar-path {
+    padding: 0 20px;
+    font-size: 12px; color: var(--mid);
+    flex: 1; text-align: center;
+  }
+  .titlebar-path span { color: var(--green); }
+  .titlebar-tabs {
+    display: flex; border-left: 1px solid var(--border);
+  }
+  .tab {
+    padding: 14px 20px;
+    font-size: 11px; color: var(--mid);
+    border-right: 1px solid var(--border);
+    cursor: pointer;
+  }
+  .tab.active { color: var(--green); background: var(--green-dim); }
+
+  /* MAIN LAYOUT */
+  .layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    flex: 1;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    border-right: 1px solid var(--border);
+    background: var(--surface);
+    display: flex; flex-direction: column;
+  }
+  .sidebar-section { padding: 20px 0; border-bottom: 1px solid var(--border); }
+  .sidebar-label {
+    padding: 0 16px 8px;
+    font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .sidebar-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 6px 16px; font-size: 12px; color: var(--mid);
+    cursor: pointer; transition: all 0.15s;
+  }
+  .sidebar-item:hover, .sidebar-item.active { color: var(--green); background: var(--green-dim); }
+  .sidebar-item .icon { color: var(--muted); font-size: 11px; width: 14px; }
+  .sidebar-item.active .icon { color: var(--green); }
+  .sidebar-count {
+    margin-left: auto; font-size: 10px;
+    color: var(--muted); background: var(--border);
+    padding: 1px 6px;
+  }
+  .sidebar-bottom {
+    margin-top: auto; padding: 16px;
+    border-top: 1px solid var(--border);
+    font-size: 11px; color: var(--muted);
+  }
+  .status-dot {
+    display: inline-block; width: 7px; height: 7px;
+    border-radius: 50%; background: var(--green);
+    margin-right: 6px;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* MAIN CONTENT */
+  .main { display: flex; flex-direction: column; }
+
+  /* HERO TERMINAL */
+  .hero-term {
+    padding: 48px;
+    border-bottom: 1px solid var(--border);
+  }
+  .prompt-line {
+    display: flex; align-items: baseline; gap: 0;
+    margin-bottom: 4px;
+  }
+  .ps1 { color: var(--green); }
+  .ps1-user { color: var(--green); }
+  .ps1-at { color: var(--mid); }
+  .ps1-host { color: var(--blue); }
+  .ps1-path { color: var(--amber); }
+  .ps1-end { color: var(--green); margin-right: 8px; }
+  .cmd { color: var(--bright); }
+  .output-block { margin-top: 24px; padding-left: 0; }
+  .output-name {
+    font-size: 48px; font-weight: 700; color: var(--bright);
+    letter-spacing: -0.02em; line-height: 1;
+    margin-bottom: 8px;
+  }
+  .output-name span { color: var(--green); }
+  .output-role { font-size: 13px; color: var(--mid); margin-bottom: 24px; }
+  .output-role .hl { color: var(--amber); }
+  .output-desc { font-size: 14px; color: var(--text); max-width: 580px; line-height: 1.7; margin-bottom: 32px; }
+  .cursor {
+    display: inline-block; width: 10px; height: 18px;
+    background: var(--green); vertical-align: middle;
+    animation: blink 1s step-end infinite;
+  }
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+  .action-row { display: flex; gap: 16px; }
+  .btn-term {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; padding: 10px 24px;
+    border: 1px solid var(--green); color: var(--green);
+    background: var(--green-dim); cursor: pointer; text-decoration: none;
+    transition: all 0.15s;
+  }
+  .btn-term:hover { background: var(--green); color: var(--bg); }
+  .btn-term.secondary { border-color: var(--border); color: var(--mid); background: transparent; }
+  .btn-term.secondary:hover { border-color: var(--mid); color: var(--bright); }
+
+  /* CONTENT PANELS */
+  .panels { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--border); }
+  .panel { border-right: 1px solid var(--border); }
+  .panel:last-child { border-right: none; }
+  .panel-header {
+    padding: 14px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--surface);
+  }
+  .panel-title { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mid); }
+  .panel-action { font-size: 11px; color: var(--green); cursor: pointer; }
+  .panel-action:hover { text-decoration: underline; }
+
+  /* POSTS LIST */
+  .post-item {
+    padding: 20px 24px; border-bottom: 1px solid var(--border);
+    cursor: pointer; transition: background 0.15s;
+  }
+  .post-item:hover { background: var(--green-dim); }
+  .post-item-meta {
+    font-size: 10px; color: var(--muted); margin-bottom: 6px;
+    display: flex; gap: 16px;
+  }
+  .post-item-meta .tag { color: var(--green); }
+  .post-item-title { font-size: 13px; color: var(--bright); line-height: 1.4; margin-bottom: 6px; }
+  .post-item-excerpt { font-size: 11px; color: var(--mid); line-height: 1.5; }
+
+  /* SIGNAL LIST */
+  .signal-item {
+    padding: 16px 24px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: flex-start; gap: 12px;
+    cursor: pointer; transition: background 0.15s;
+  }
+  .signal-item:hover { background: var(--green-dim); }
+  .signal-prefix { font-size: 11px; color: var(--muted); padding-top: 2px; min-width: 20px; }
+  .signal-info {}
+  .signal-name-t { font-size: 12px; color: var(--bright); margin-bottom: 4px; }
+  .signal-desc-t { font-size: 11px; color: var(--mid); line-height: 1.4; }
+  .signal-tags { margin-top: 8px; display: flex; gap: 8px; }
+  .stag {
+    font-size: 10px; padding: 2px 6px;
+    border: 1px solid var(--border); color: var(--muted);
+  }
+  .stag.active { border-color: var(--green-mid); color: var(--green); }
+
+  /* NEWSLETTER TERMINAL */
+  .newsletter-term {
+    padding: 40px 48px;
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .nl-prompt { margin-bottom: 20px; }
+  .nl-prompt .ps1-end { margin-right: 8px; }
+  .nl-title { font-size: 28px; font-weight: 700; color: var(--bright); margin-bottom: 8px; }
+  .nl-title span { color: var(--green); }
+  .nl-sub { font-size: 13px; color: var(--mid); margin-bottom: 28px; max-width: 480px; line-height: 1.6; }
+  .nl-form { display: flex; gap: 0; max-width: 420px; }
+  .nl-input-wrap { flex: 1; display: flex; align-items: center; border: 1px solid var(--border); background: var(--bg); }
+  .nl-ps { padding: 0 10px; color: var(--green); font-size: 12px; }
+  .nl-input {
+    flex: 1; padding: 12px 8px; background: transparent;
+    border: none; outline: none; color: var(--bright);
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  }
+  .nl-input::placeholder { color: var(--muted); }
+  .nl-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; padding: 12px 20px;
+    background: var(--green); color: var(--bg);
+    border: none; cursor: pointer; font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+  .nl-btn:hover { opacity: 0.85; }
+
+  /* STATUSBAR */
+  .statusbar {
+    position: sticky; bottom: 0;
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--green); padding: 4px 16px;
+    font-size: 11px; color: var(--bg); font-weight: 500;
+  }
+  .statusbar-left { display: flex; gap: 20px; }
+  .statusbar-right { display: flex; gap: 20px; }
+
+  /* MOCKUP LABEL */
+  .mockup-label {
+    position: fixed; bottom: 32px; right: 20px; z-index: 999;
+    background: var(--green); color: var(--bg);
+    font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 8px 14px;
+  }
+</style>
+</head>
+<body>
+
+<div class="mockup-label">Direction 02 — Terminal</div>
+
+<div class="window">
+  <div class="titlebar">
+    <div class="titlebar-dots">
+      <div class="dot-r"></div>
+      <div class="dot-y"></div>
+      <div class="dot-g"></div>
+    </div>
+    <div class="titlebar-path">
+      <span>deya</span>@<span>dev</span>:~/<span>home</span>
+    </div>
+    <div class="titlebar-tabs">
+      <div class="tab active">index.md</div>
+      <div class="tab">writing/</div>
+      <div class="tab">signals/</div>
+      <div class="tab">+</div>
+    </div>
+  </div>
+
+  <div class="layout">
+    <div class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-label">Navigation</div>
+        <div class="sidebar-item active"><span class="icon">⌂</span> home</div>
+        <div class="sidebar-item"><span class="icon">✎</span> writing <span class="sidebar-count">12</span></div>
+        <div class="sidebar-item"><span class="icon">⚡</span> signal stack</div>
+        <div class="sidebar-item"><span class="icon">></span> prompts</div>
+        <div class="sidebar-item"><span class="icon">⊞</span> tools</div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Topics</div>
+        <div class="sidebar-item"><span class="icon">#</span> capabilities</div>
+        <div class="sidebar-item"><span class="icon">#</span> enterprise</div>
+        <div class="sidebar-item"><span class="icon">#</span> vendor</div>
+        <div class="sidebar-item"><span class="icon">#</span> policy</div>
+        <div class="sidebar-item"><span class="icon">#</span> genai-mil</div>
+      </div>
+      <div class="sidebar-bottom">
+        <span class="status-dot"></span>deya.dev — live
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="hero-term">
+        <div class="prompt-line">
+          <span class="ps1-user">deya</span>
+          <span class="ps1-at">@</span>
+          <span class="ps1-host">cdao</span>
+          <span class="ps1-path">:~/home</span>
+          <span class="ps1-end" style="margin-left:4px">$</span>
+          <span class="cmd"> whoami --verbose</span>
+        </div>
+        <div class="output-block">
+          <div class="output-name">Deya<span>.</span>dev</div>
+          <div class="output-role">
+            <span class="hl">Program Manager</span> · CDAO · GenAI.mil
+          </div>
+          <p class="output-desc">
+            Writing about AI from inside the machine — what models can actually do,
+            how enterprise deployment really works, and what it means when your users
+            operate in classified environments.
+          </p>
+          <div class="action-row">
+            <a href="#" class="btn-term">./read-latest</a>
+            <a href="#" class="btn-term secondary">cat signal-stack.md</a>
+          </div>
+        </div>
+        <div style="margin-top:32px">
+          <span class="ps1-user">deya</span><span class="ps1-at">@</span><span class="ps1-host">cdao</span><span class="ps1-path">:~/home</span><span class="ps1-end" style="margin-left:4px">$</span>
+          <span class="cursor"></span>
+        </div>
+      </div>
+
+      <div class="panels">
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">writing/ — recent</span>
+            <span class="panel-action">ls -la →</span>
+          </div>
+          <div class="post-item">
+            <div class="post-item-meta"><span class="tag">#capabilities</span><span>2026-03-15</span><span>8 min</span></div>
+            <div class="post-item-title">What the latest model releases mean for government deployment</div>
+            <div class="post-item-excerpt">Everyone covered what dropped. Nobody covered what it means when your users can't paste classified data.</div>
+          </div>
+          <div class="post-item">
+            <div class="post-item-meta"><span class="tag">#enterprise</span><span>2026-02-28</span><span>6 min</span></div>
+            <div class="post-item-title">Building an AI briefing system without social media</div>
+            <div class="post-item-excerpt">The sources, the workflow, and the prompts for staying current when you can't doom-scroll.</div>
+          </div>
+          <div class="post-item">
+            <div class="post-item-meta"><span class="tag">#vendor</span><span>2026-02-10</span><span>10 min</span></div>
+            <div class="post-item-title">Vendor AI demos never show you this — here's what to ask</div>
+            <div class="post-item-excerpt">Four questions that separate real capability from slide-ware, after hundreds of pitches.</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">signal-stack.md — top sources</span>
+            <span class="panel-action">view all →</span>
+          </div>
+          <div class="signal-item">
+            <div class="signal-prefix">01</div>
+            <div class="signal-info">
+              <div class="signal-name-t">Latent Space Podcast</div>
+              <div class="signal-desc-t">Deep dives on what models actually do and real deployment patterns. Builder/PM lens.</div>
+              <div class="signal-tags"><span class="stag active">#capabilities</span><span class="stag active">#enterprise</span></div>
+            </div>
+          </div>
+          <div class="signal-item">
+            <div class="signal-prefix">02</div>
+            <div class="signal-info">
+              <div class="signal-name-t">Import AI — Jack Clark</div>
+              <div class="signal-desc-t">Weekly. Ex-Anthropic. Capabilities + policy implications for decision-makers.</div>
+              <div class="signal-tags"><span class="stag active">#capabilities</span><span class="stag">#policy</span></div>
+            </div>
+          </div>
+          <div class="signal-item">
+            <div class="signal-prefix">03</div>
+            <div class="signal-info">
+              <div class="signal-name-t">Simon Willison's Blog</div>
+              <div class="signal-desc-t">Tests everything. No hype — just what it can actually do.</div>
+              <div class="signal-tags"><span class="stag active">#capabilities</span></div>
+            </div>
+          </div>
+          <div class="signal-item">
+            <div class="signal-prefix">04</div>
+            <div class="signal-info">
+              <div class="signal-name-t">Stratechery</div>
+              <div class="signal-desc-t">Why vendors are making moves. Essential for the vendor landscape.</div>
+              <div class="signal-tags"><span class="stag active">#vendor</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="newsletter-term">
+        <div class="nl-prompt">
+          <span class="ps1-user">deya</span><span class="ps1-at">@</span><span class="ps1-host">cdao</span><span class="ps1-path">:~/newsletter</span><span class="ps1-end" style="margin-left:4px">$</span>
+          <span class="cmd"> subscribe --list "the-brief"</span>
+        </div>
+        <div class="nl-title">The <span>Signal</span>, not the noise.</div>
+        <p class="nl-sub">A regular dispatch on AI capabilities, enterprise deployment, and the vendor landscape — from inside the DoD.</p>
+        <div class="nl-form">
+          <div class="nl-input-wrap">
+            <span class="nl-ps">$</span>
+            <input class="nl-input" type="email" placeholder="email@address.gov">
+          </div>
+          <button class="nl-btn">./subscribe</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="statusbar">
+    <div class="statusbar-left">
+      <span>● NORMAL</span>
+      <span>deya.dev</span>
+      <span>UTF-8</span>
+    </div>
+    <div class="statusbar-right">
+      <span>CDAO · GenAI.mil</span>
+      <span>DUCK OPS CLEARED 🦆</span>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
